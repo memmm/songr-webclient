@@ -10,7 +10,7 @@ import Image from "react-bootstrap/Image";
 
 const Home = () => (
   <Layout>
-    <Container>
+    <Container className="m-auto">
       <Row>
         <Col xs={12} md={6}>
           <Image
