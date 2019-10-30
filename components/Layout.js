@@ -1,31 +1,34 @@
 import Header from "./Header";
 import Head from "next/head";
-
-const layoutStyle = {
-  display: "flex",
-  flexDirection: "column",
-  height: "100%",
-  width: "100%"
-};
-
-const contentStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column"
-};
+import { Global, jsx, css } from "@emotion/core";
 
 const Layout = props => (
-  <div>
+  <div className="Layout">
     <Head>
       <title>SongR</title>
       <link rel="icon" href="/static/favicon.ico" importance="low" />
+      <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous"
+      />
     </Head>
-    <div className="Layout" style={layoutStyle}>
-      <Header />
-      <div className="Content" style={contentStyle}>
-        {props.children}
-      </div>
-    </div>
+    <Global
+      styles={css`
+        * {
+          box-sizing: border-box;
+        }
+        html,
+        body,
+        #__next {
+          height: 100%;
+          width: 100%;
+        }
+      `}
+    />
+    <Header />
+    <div className="Content">{props.children}</div>
   </div>
 );
 
