@@ -1,4 +1,5 @@
 import Header from "./Header";
+import Head from "next/head";
 
 const layoutStyle = {
   display: "flex",
@@ -14,10 +15,16 @@ const contentStyle = {
 };
 
 const Layout = props => (
-  <div className="Layout" style={layoutStyle}>
-    <Header />
-    <div className="Content" style={contentStyle}>
-      {props.children}
+  <div>
+    <Head>
+      <title>SongR</title>
+      <link rel="icon" href="/static/favicon.ico" importance="low" />
+    </Head>
+    <div className="Layout" style={layoutStyle}>
+      <Header />
+      <div className="Content" style={contentStyle}>
+        {props.children}
+      </div>
     </div>
   </div>
 );
