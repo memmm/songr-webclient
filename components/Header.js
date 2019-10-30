@@ -1,35 +1,35 @@
-import React from 'react'
-import Link from 'next/link'
+import React from "react";
+import Link from "next/link";
 
-const Nav = () => (
+const Header = () => (
   <nav>
     <ul>
       <li>
-        <Link href='/'>
+        <Link href="/">
           <a>Home</a>
-        </Link>
-      </li>
-      
-      <li>
-      <Link href='chat'>
-        <a>Chat</a>
         </Link>
       </li>
 
       <li>
-      <Link href='settings'>
-        <a>Settings</a>
+        <Link href="chat">
+          <a>Chat</a>
+        </Link>
+      </li>
+
+      <li>
+        <Link href="settings">
+          <a>Settings</a>
         </Link>
       </li>
       <li>
-        <Link href='register_login'>
+        <Link href="register_login">
           <a>Register/Login</a>
         </Link>
       </li>
     </ul>
 
     <style jsx>{`
-          :global(body) {
+      :global(body) {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
           Helvetica, sans-serif;
@@ -55,6 +55,6 @@ const Nav = () => (
       }
     `}</style>
   </nav>
-)
+);
 
-export default Nav
+export default Header;

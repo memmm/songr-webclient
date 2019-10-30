@@ -1,15 +1,19 @@
 import React from "react";
 import Link from "next/link";
+import Layout from "../components/Layout";
+
 export default function Chat() {
   return (
-    <div>
+    <Layout>
       <div>
-          <Link href='/'>
-              <a>Back</a>
+        <div>
+          <Link href="/">
+            <a>Back</a>
           </Link>
-        <h1>Chat</h1>
+          <h1>Chat</h1>
+        </div>
+        <style jsx>{``}</style>
       </div>
-      <style jsx>{``}</style>
-    </div>
+    </Layout>
   );
 }
