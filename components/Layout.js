@@ -1,6 +1,6 @@
 import Header from "./Header";
 import Head from "next/head";
-import { Global, jsx, css } from "@emotion/core";
+import "./Layout.scss";
 
 const Layout = props => (
   <div className="Layout">
@@ -14,19 +14,6 @@ const Layout = props => (
         crossorigin="anonymous"
       />
     </Head>
-    <Global
-      styles={css`
-        * {
-          box-sizing: border-box;
-        }
-        html,
-        body,
-        #__next {
-          height: 100%;
-          width: 100%;
-        }
-      `}
-    />
     <Header />
     <div className="Content">{props.children}</div>
   </div>

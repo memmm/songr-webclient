@@ -21,5 +21,5 @@ The pages share a layout (components/Layout.js), which contains the Header.js (f
 ## Style
 
 We use React Bootstrap, which is just a wrapper over Bootstrap.
-Emotion is used for more readable CSS - the React default CSS-in-JS is really crappy.
+SCSS style files are used for more readable CSS - the React default CSS-in-JS is really crappy.
 If you want syntax highlighting for the CSS, install VSCode plugin 'vscode-styled-components'.
