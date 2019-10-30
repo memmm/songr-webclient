@@ -21,11 +21,15 @@ const Nav = () => (
         <a>Settings</a>
         </Link>
       </li>
-      
+      <li>
+        <Link href='register_login'>
+          <a>Register/Login</a>
+        </Link>
+      </li>
     </ul>
 
     <style jsx>{`
-      :global(body) {
+          :global(body) {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
           Helvetica, sans-serif;
