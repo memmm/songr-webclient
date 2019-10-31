@@ -1,0 +1,27 @@
+$bg: #151a20;
+
+.nav-tabs {
+    border: none;
+
+    .nav-link {
+
+        background: #251351;
+        color: #ddd;
+        flex: 1;
+
+        &.active {
+            background: $bg;
+            color: white;
+            border: none;
+
+        }
+
+        &:hover {
+            border-color: transparent;
+        }
+    }
+}
+
+.tab-content {
+    background: $bg;
+}

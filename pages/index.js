@@ -11,15 +11,18 @@ import Image from "react-bootstrap/Image";
 const Home = () => (
   <Layout>
     <Container className="m-auto">
-      <Row>
-        <Col xs={12} md={6}>
-          <Image
-            src="/static/window.jpg"
+      <Row className="index-row">
+        <Col xs={12} md={{ span: 5 }}>
+          <h2 className="text-white font-weight-bold">Connect through music</h2>{" "}
+          We believe music should be a shared experience. Find people who can
+          truly understand your musical taste and have a discussion!
+          {/* <Image
+            src="/static/freewifi-lordess.jpg"
             alt="SongR welcome - connect through music"
             fluid
-          />
+          /> */}
         </Col>
-        <Col xs={12} md={6}>
+        <Col xs={12} md={{ span: 6, offset: 1 }}>
           <LoginRegisterTabs />
         </Col>
       </Row>

@@ -1,12 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import "./Layout.scss";
 
 const Header = () => (
   <nav>
     <ul>
       <li>
         <Link href="/">
-          <a>Home</a>
+          <a>
+            <h1 className="title">SongR</h1>
+          </a>
         </Link>
       </li>
 

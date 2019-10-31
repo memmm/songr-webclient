@@ -3,10 +3,12 @@ import Tab from "react-bootstrap/Tab";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+import "./LoginRegisterTabs.scss";
+
 const LoginRegisterTabs = () => (
   <Tabs defaultActiveKey="login">
     <Tab eventKey="login" title="Login">
-      <Form className="m-3">
+      <Form className="p-3">
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />
@@ -22,7 +24,7 @@ const LoginRegisterTabs = () => (
       </Form>
     </Tab>
     <Tab eventKey="register" title="Register">
-      <Form className="m-3">
+      <Form className="p-3">
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />
