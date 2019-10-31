@@ -3,7 +3,7 @@ import Link from "next/link";
 import "./Layout.scss";
 
 const Header = () => (
-  <nav>
+  <nav className="header">
     <ul>
       <li>
         <Link href="/">

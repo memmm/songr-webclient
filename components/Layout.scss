@@ -32,9 +32,22 @@ body,
     flex-direction: column;
 }
 
-.title {
-    color: white;
+.header {
+    background: #151a20;
 
+    ul {
+        margin-bottom: 0;
+
+        a {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .title {
+        color: white;
+
+    }
 }
 
 h4 {
