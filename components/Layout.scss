@@ -1,23 +1,69 @@
-  * {
-      box-sizing: border-box;
-  }
+$primary: #1297d1;
+$secondary: #7D2E68;
+$tertiary: #251351;
+$text: #bebebe;
 
-  html,
-  body,
-  #__next {
-      height: 100%;
-      width: 100%;
-  }
 
-  .Layout {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-  }
+* {
+    box-sizing: border-box;
+}
 
-  .Content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-  }
+html,
+body,
+#__next {
+    height: 100%;
+    width: 100%;
+    color: $text;
+    font-size: 15px;
+}
+
+.Layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(transparent, #111),
+        linear-gradient(#C074B2, #8AB5E8);
+}
+
+.Content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    color: white;
+
+}
+
+h4 {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: $primary;
+    border: none;
+    color: #ddd8de;
+}
+
+//index.js related stuff
+.index-row {
+    min-height: 28rem;
+}
+
+
+//chat related 
+.chat-container {
+    background: #151a20;
+    box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
+
+    .chat-stream {
+        background: #24282e;
+    }
+
+    label {
+        font-size: 0.8rem;
+    }
+}
