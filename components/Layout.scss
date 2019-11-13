@@ -61,6 +61,17 @@ h4 {
     color: #ddd8de;
 }
 
+.form-control {
+    background: #292838;
+    border-width: 0px;
+    color: white;
+
+    &:focus {
+        background: #292838;
+    }
+}
+
+
 //index.js related stuff
 .index-row {
     min-height: 28rem;
@@ -73,10 +84,16 @@ h4 {
     box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
 
     .chat-stream {
-        background: #24282e;
+        border: 1px solid #24282e;
     }
 
     label {
         font-size: 0.8rem;
+    }
+
+    .chat-card {
+        img {
+            height: 4rem;
+        }
     }
 }

@@ -7,7 +7,7 @@ import "./LoginRegisterTabs.scss";
 
 const LoginRegisterTabs = () => (
   <Tabs defaultActiveKey="login">
-    <Tab eventKey="login" title="Login">
+    <Tab eventKey="login" title="Login" className="mr-3">
       <Form className="p-3">
         <Form.Group controlId="formLoginEmail">
           <Form.Label>Email address</Form.Label>
