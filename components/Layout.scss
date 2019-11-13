@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps:700&display=swap');
+
 $primary: #1297d1;
 $secondary: #7D2E68;
 $tertiary: #251351;
@@ -46,7 +48,8 @@ body,
 
     .title {
         color: white;
-
+        font-family: 'Oleo Script Swash Caps',
+            cursive;
     }
 }
 
@@ -64,10 +67,11 @@ h4 {
 .form-control {
     background: #292838;
     border-width: 0px;
-    color: white;
+    color: $text;
 
     &:focus {
         background: #292838;
+        color: $text;
     }
 }
 
@@ -84,7 +88,16 @@ h4 {
     box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
 
     .chat-stream {
-        border: 1px solid #24282e;
+        min-height: 24rem;
+
+        @media screen and (min-width: 768px) {
+            border: 1px solid #24282e;
+        }
+
+        .message-bubble {
+            max-width: 20rem;
+            background: #2c2c5f;
+        }
     }
 
     label {
@@ -94,6 +107,10 @@ h4 {
     .chat-card {
         img {
             height: 4rem;
+        }
+
+        @media screen and (min-width: 768px) {
+            border-bottom: 1px solid #343a40;
         }
     }
 }

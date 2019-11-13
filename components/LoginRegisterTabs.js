@@ -7,7 +7,7 @@ import "./LoginRegisterTabs.scss";
 
 const LoginRegisterTabs = () => (
   <Tabs defaultActiveKey="login">
-    <Tab eventKey="login" title="Login" className="mr-3">
+    <Tab eventKey="login" title="Login">
       <Form className="p-3">
         <Form.Group controlId="formLoginEmail">
           <Form.Label>Email address</Form.Label>
@@ -18,7 +18,7 @@ const LoginRegisterTabs = () => (
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="w-100">
           Login
         </Button>
       </Form>
@@ -43,7 +43,7 @@ const LoginRegisterTabs = () => (
         <Form.Group controlId="formAcceptCheckbox">
           <Form.Check type="checkbox" label="I accept everything." />
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className="w-100">
           Register
         </Button>
       </Form>
