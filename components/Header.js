@@ -24,11 +24,6 @@ const Header = () => (
           <a>Settings</a>
         </Link>
       </li>
-      <li>
-        <Link href="register_login">
-          <a>Register/Login</a>
-        </Link>
-      </li>
     </ul>
 
     <style jsx>{`
