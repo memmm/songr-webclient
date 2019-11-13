@@ -10,18 +10,21 @@
         align-items: center;
         justify-content: center;
 
+        div {
+            box-sizing: border-box;
+            position: relative;
+            cursor: pointer;
+            border-color: transparent transparent transparent #bebebe;
+        }
+
         &.btn-play {
             height: 3rem;
             width: 3rem;
 
-            .play {
-                box-sizing: border-box;
+            div {
                 height: 1.5rem;
-
-                border-color: transparent transparent transparent white;
                 transition: 100ms all ease;
                 will-change: border-width;
-                cursor: pointer;
 
                 // play state
                 border-style: solid;
@@ -33,6 +36,33 @@
                     border-width: 0px 0 0px 1.5rem;
                 }
             }
+        }
+
+        &.btn-next,
+        &.btn-prev {
+            div {
+
+                height: 1rem;
+                border-style: solid;
+                border-width: .5rem 0 .5rem 1rem;
+
+                &:after {
+                    position: absolute;
+                    top: -0.5rem;
+                    left: -0.5rem;
+                    content: '';
+                    box-sizing: border-box;
+                    height: 1rem;
+                    border-color: transparent transparent transparent #bebebe;
+                    cursor: pointer;
+                    border-style: solid;
+                    border-width: .5rem 0 .5rem 1rem;
+                }
+            }
+        }
+
+        &.btn-prev {
+            transform: rotate(180deg);
         }
     }
 }

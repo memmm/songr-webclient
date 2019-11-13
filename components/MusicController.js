@@ -7,12 +7,18 @@ export default function MusicController() {
     e.target.classList.toggle("pause");
   }
   return (
-    <div className="music-controller">
-      <div className="btn btn-prev"></div>
-      <div className="btn btn-play" onClick={togglePlay}>
-        <div className="play"></div>
+    <div className="music-controller w-100 d-inline-flex align-items-center">
+      <div className="ml-auto">
+        <div className="btn btn-prev">
+          <div></div>
+        </div>
+        <div className="btn btn-play" onClick={togglePlay}>
+          <div></div>
+        </div>
+        <div className="btn btn-next">
+          <div></div>
+        </div>
       </div>
-      <div className="btn btn-next"></div>
     </div>
   );
 }

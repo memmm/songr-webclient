@@ -8,15 +8,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
 import MusicController from "../components/MusicController";
+import ChatStream from "../components/ChatStream";
 
 export default function Chat() {
   return (
     <Layout>
-      <Container className="chat-container m-auto">
+      <Container className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto">
         <Row>
           <Col xs={12} md={4}>
             <div className="py-3 border-bottom border-info d-flex align-items-center justify-content-between">
@@ -31,27 +30,19 @@ export default function Chat() {
                 <Button>NEW CHAT</Button>
               </div>
             </div>
-            <div>
+            <div className="d-flex d-md-block my-2 my-md-0">
               {[...Array(4)].map((x, i) => (
                 <ChatCard key={i}></ChatCard>
               ))}
             </div>
           </Col>
           <Col xs={12} md={8} className="d-flex flex-column">
-            <div className="chat-stream mx-3 mt-3 p-3 rounded-top d-flex align-items-center justify-content-between">
+            <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
               <p>User</p>
               <p>Now listening to</p>
               <Button>Leave chat</Button>
             </div>
-            <div className="chat-stream mx-3 p-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-between">
-              Chat bubbles here
-              <InputGroup className="">
-                <FormControl placeholder="Message" aria-label="Message" />
-                <InputGroup.Append>
-                  <Button variant="outline-secondary">SEND</Button>
-                </InputGroup.Append>
-              </InputGroup>
-            </div>
+            <ChatStream />
           </Col>
         </Row>
         <Row>
