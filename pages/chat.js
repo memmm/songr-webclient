@@ -11,6 +11,7 @@ import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
+import MusicController from "../components/MusicController";
 
 export default function Chat() {
   return (
@@ -54,8 +55,8 @@ export default function Chat() {
           </Col>
         </Row>
         <Row>
-          <Col xs={12} className="">
-            Music controller here
+          <Col xs={12} className="p-3">
+            <MusicController />
           </Col>
         </Row>
       </Container>
