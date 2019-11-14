@@ -91,7 +91,7 @@ const setting = () => {
                       aria-describedby="basic-addon2"/>
 
                   <InputGroup.Append>
-                    <Button variant="outline-secondary">Change</Button>
+                    <Button variant="outline-secondary">Connect</Button>
                   </InputGroup.Append>
 
                 </InputGroup>
