@@ -176,12 +176,13 @@ const setting = () => {
                       </InputGroup.Prepend>
                       <FormControl as="textarea" aria-label="With textarea" />
                     </InputGroup>
-                    <div>
-                    </div>
-                  </div>
 
+                  </div>
+                  
                 </div>
+
               </div>
+
             </Col>
           </Row>
 

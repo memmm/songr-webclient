@@ -43,9 +43,13 @@ const LoginRegisterTabs = () => (
         <Form.Group controlId="formAcceptCheckbox">
           <Form.Check type="checkbox" label="I accept everything." />
         </Form.Group>
+          <Button variant="primary" type="submit" className="w-100">
+              Register
+          </Button>
+        ------------- OR -------------
         <Button variant="primary" type="submit" className="w-100">
-          Register
-        </Button>
+          Register With Spotify
+      </Button>
       </Form>
     </Tab>
   </Tabs>
