@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 
 import axios from "axios";
 import "./LoginRegisterTabs.scss";
+import Router from "next/router";
 
 class LoginRegisterTabs extends React.Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class LoginRegisterTabs extends React.Component {
   login(e) {
     e.preventDefault();
     console.log("login");
+
+    Router.push("/chat");
   }
   registerWithSpotify(e) {
     e.preventDefault();

@@ -41,20 +41,17 @@ export default class Settings extends React.Component {
               <div>
                 <label className="mb-1">Username:</label>
                 <FormControl
-                  placeholder="username"
                   aria-label="username"
                   aria-describedby="basic-addon2"
                 />
                 <label className="mt-3 mb-1">Password:</label>
                 <FormControl
                   type="password"
-                  placeholder="password"
                   aria-label="password"
                   aria-describedby="basic-addon2"
                 />
                 <label className="mt-3 mb-1">Email:</label>
                 <FormControl
-                  placeholder="Email:<email@email.nl>"
                   aria-label="email"
                   aria-describedby="basic-addon2"
                 />
@@ -80,47 +77,49 @@ export default class Settings extends React.Component {
             <Col xs={12} md={{ span: 8, offset: 0 }} className="px-0 px-md-2">
               <div className="section d-flex flex-column p-3 h-100">
                 <h4 className="mb-3">Preferences</h4>
-                <div>
-                  <div className="d-flex justify-content-between my-2">
-                    <h5>Songs</h5>
-                    <a href="" onClick={this.addSong()}>
-                      Add
-                    </a>
-                  </div>
+                <div className="d-flex flex-column h-100">
+                  <div className="pref-section">
+                    <div className="d-flex justify-content-between my-2">
+                      <h5>Songs</h5>
+                      <a href="" onClick={this.addSong()}>
+                        Add
+                      </a>
+                    </div>
 
-                  <ul className="pl-2">
-                    {this.props.songs.map((song, i) => (
-                      <ListItem key={i} item={song}></ListItem>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <div className="d-flex justify-content-between my-2">
-                    <h5>Genres</h5>
-                    <a href="" onClick={this.addGenre()}>
-                      Add
-                    </a>
+                    <ul className="pl-2">
+                      {this.props.songs.map((song, i) => (
+                        <ListItem key={i} item={song}></ListItem>
+                      ))}
+                    </ul>
                   </div>
+                  <div className="pref-section">
+                    <div className="d-flex justify-content-between my-2">
+                      <h5>Genres</h5>
+                      <a href="" onClick={this.addGenre()}>
+                        Add
+                      </a>
+                    </div>
 
-                  <ul className="pl-2">
-                    {this.props.songs.map((song, i) => (
-                      <ListItem key={i} item={song}></ListItem>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <div className="d-flex justify-content-between my-2">
-                    <h5>Artists</h5>
-                    <a href="" onClick={this.addGenre()}>
-                      Add
-                    </a>
+                    <ul className="pl-2">
+                      {this.props.songs.map((song, i) => (
+                        <ListItem key={i} item={song}></ListItem>
+                      ))}
+                    </ul>
                   </div>
+                  <div className="pref-section">
+                    <div className="d-flex justify-content-between my-2">
+                      <h5>Artists</h5>
+                      <a href="" onClick={this.addGenre()}>
+                        Add
+                      </a>
+                    </div>
 
-                  <ul className="pl-2">
-                    {this.props.songs.map((song, i) => (
-                      <ListItem key={i} item={song}></ListItem>
-                    ))}
-                  </ul>
+                    <ul className="pl-2">
+                      {this.props.songs.map((song, i) => (
+                        <ListItem key={i} item={song}></ListItem>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </Col>
