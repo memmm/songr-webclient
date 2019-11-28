@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps:700&display=swap');
 
 $primary: #1297d1;
-$secondary: #7D2E68;
+$secondary: #151a20;
 $tertiary: #251351;
 $text: #bebebe;
 
@@ -35,7 +35,7 @@ body,
 }
 
 .header {
-    background: #151a20;
+    background: $secondary;
 
     ul {
         margin-bottom: 0;
@@ -55,6 +55,11 @@ body,
 
 h4 {
     font-size: 1.2rem;
+    font-weight: bold;
+}
+
+h5 {
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -89,7 +94,7 @@ h4 {
 
 //chat related 
 .chat-container {
-    background: #151a20;
+    background: $secondary;
     box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
 
     .chat-stream {
@@ -121,12 +126,19 @@ h4 {
 }
 
 
-//setting related
-.setting-container {
-    background: #151a20;
-    box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
+//settings related
+.settings-container {
+    .section {
+        background: $secondary;
+        box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
+    }
 
-    .setting-stream {
+    .thumbnail {
+        height: 4rem;
+    }
+
+
+    .settings-stream {
         background: #24282e;
     }
 

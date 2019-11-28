@@ -1,5 +1,6 @@
 import React from "react";
 import Layout from "../components/Layout";
+import ListItem from "../components/ListItem";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -8,189 +9,124 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import Image from 'react-bootstrap/Image';
+import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 
+export default class Settings extends React.Component {
+  static getInitialProps({ req, res }) {
+    return { songs: ["first", "second"] };
+  }
 
+  constructor(props) {
+    super(props);
+    // this.state = { loggedIn: false }
+  }
 
-
-const setting = () => {
-  return (
+  changeSettings() {}
+  addSong() {}
+  addGenre() {}
+  addArtist() {}
+  render() {
+    return (
       <Layout>
-        <Container className="setting-container m-auto">
+        <Container className="settings-container mx-auto mt-md-5">
           <Row>
-            <Col xs={12} md={4} className="d-flex flex-column">
-
-              <div className="py-3 border-info d-flex align-items-center justify-content-between">
-                <div>
-                  Account Settings
+            <Col xs={12} md={4} className="section py-3">
+              <div className="d-flex justify-content-between">
+                <h4>Account Settings</h4>
+                <a href="" onClick={this.changeSettings()}>
+                  Edit
+                </a>
+              </div>
+              <div>
+                <label className="mb-1">Username:</label>
+                <FormControl
+                  placeholder="username"
+                  aria-label="username"
+                  aria-describedby="basic-addon2"
+                />
+                <label className="mt-3 mb-1">Password:</label>
+                <FormControl
+                  type="password"
+                  placeholder="password"
+                  aria-label="password"
+                  aria-describedby="basic-addon2"
+                />
+                <label className="mt-3 mb-1">Email:</label>
+                <FormControl
+                  placeholder="Email:<email@email.nl>"
+                  aria-label="email"
+                  aria-describedby="basic-addon2"
+                />
+                <div className="d-flex justify-content-between align-items-start mt-3">
+                  <label className="">Thumbnail:</label>
+                  <Image
+                    className="thumbnail p-0"
+                    src="static/pusheen.jpg"
+                    thumbnail
+                  />
                 </div>
               </div>
-
-              <div>
-
-                <InputGroup className="mb-3">
-                  <FormControl
-                      placeholder="username"
-                      aria-label="username"
-                      aria-describedby="basic-addon2"/>
-                  <InputGroup.Append>
-                    <Button variant="outline-secondary">Change</Button>
-                  </InputGroup.Append>
-                </InputGroup>
-
-              </div> <div>
-
-              <InputGroup className="mb-3">
-                <FormControl  type="password"
-                              placeholder="password"
-                              aria-label="password"
-                              aria-describedby="basic-addon2"/>
-                <InputGroup.Append>
-                  <Button variant="outline-secondary">Change</Button>
-                </InputGroup.Append>
-              </InputGroup>
-
-            </div>
-
-              <div>
-
-                <InputGroup className="mb-3">
-                  <FormControl
-                      placeholder="Email:<email@email.nl>"
-                      aria-label="email"
-                      aria-describedby="basic-addon2"/>
-                  <InputGroup.Append>
-                    <Button variant="outline-secondary">Change</Button>
-                  </InputGroup.Append>
-                </InputGroup>
-
-              </div>
-              <div>
-
-                <InputGroup className="mb-3">
-                  <FormControl
-                      placeholder="Thumbnail"
-                      aria-label="thumbnail"
-                      aria-describedby="basic-addon2"/>
-                  <Col xs={2} md={3}>
-                    <Image src="static/thumb.jpg"thumbnail   />
-                  </Col>
-                  <InputGroup.Append>
-                    <Button variant="outline-secondary">Change</Button>
-                  </InputGroup.Append>
-                </InputGroup>
-
-              </div>
-              <div>
-
-                <InputGroup className="mb-3">
-                  <FormControl
-                      placeholder="Not connected to specify"
-                      aria-label="username"
-                      aria-describedby="basic-addon2"/>
-
-                  <InputGroup.Append>
-                    <Button variant="outline-secondary">Connect</Button>
-                  </InputGroup.Append>
-
-                </InputGroup>
+              <div className="mt-5">
+                <label className="mb-0">Not connected to Spotify</label>
                 <Form.Text className="text-muted">
-                  Connect now to enjoy everything that Songr has to offer!
+                  Connect now to enjoy everything Songr has to offer!
                 </Form.Text>
-
+                <Button className="mt-3 w-100" variant="outline-secondary">
+                  Connect
+                </Button>
               </div>
-
-
-
             </Col>
-            <Col  xs={12} md={8} className="d-flex flex-column ">
-
-              <div className={" mx-3 p-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-between"}>
-                <p>Preferences</p>
-              </div>
-              <div className="py-1 border border-info d-flex align-items-center justify-content-between ">
-
-
-                <div  className="mx-3 p-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-between">
-                  <div className="py-3 border-0  d-flex align-items-center justify-content-between">
-
-                    <div>
-                      Songs
-                    </div>
-                    <div>
-                      <Button>+</Button>
-                    </div>
+            <Col xs={12} md={{ span: 8, offset: 0 }} className="px-0 px-md-2">
+              <div className="section d-flex flex-column p-3 h-100">
+                <h4 className="mb-3">Preferences</h4>
+                <div>
+                  <div className="d-flex justify-content-between my-2">
+                    <h5>Songs</h5>
+                    <a href="" onClick={this.addSong()}>
+                      Add
+                    </a>
                   </div>
 
-                  <div className="d-flex align-items-center justify-content-between">
-
-
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text>Songs list..</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl as="textarea" aria-label="With textarea" />
-                    </InputGroup>
-
-                  </div>
-
-                  <div>
-
-                  </div>
-                  <div className="py-3 border-0  d-flex align-items-center justify-content-between">
-
-                    <div>
-                      Genres
-                    </div>
-                    <div>
-                      <Button>+</Button>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text>Genres list..</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl as="textarea" aria-label="With textarea" />
-                    </InputGroup>
-
-                  </div>
-
-                  <div className="py-3 border-0  d-flex align-items-center justify-content-between" >
-
-                    <div>
-                      Artists
-                    </div>
-                    <div>
-                      <Button>+</Button>
-                    </div>
-                  </div>
-
-                  <div className=" d-flex align-items-center justify-content-between ">
-
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text>Artists list..</InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <FormControl as="textarea" aria-label="With textarea" />
-                    </InputGroup>
-
-                  </div>
-                  
+                  <ul className="pl-2">
+                    {this.props.songs.map((song, i) => (
+                      <ListItem key={i} item={song}></ListItem>
+                    ))}
+                  </ul>
                 </div>
+                <div>
+                  <div className="d-flex justify-content-between my-2">
+                    <h5>Genres</h5>
+                    <a href="" onClick={this.addGenre()}>
+                      Add
+                    </a>
+                  </div>
 
+                  <ul className="pl-2">
+                    {this.props.songs.map((song, i) => (
+                      <ListItem key={i} item={song}></ListItem>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <div className="d-flex justify-content-between my-2">
+                    <h5>Artists</h5>
+                    <a href="" onClick={this.addGenre()}>
+                      Add
+                    </a>
+                  </div>
+
+                  <ul className="pl-2">
+                    {this.props.songs.map((song, i) => (
+                      <ListItem key={i} item={song}></ListItem>
+                    ))}
+                  </ul>
+                </div>
               </div>
-
             </Col>
           </Row>
-
         </Container>
       </Layout>
-  );
+    );
+  }
 }
-export default setting;
-
-
-
