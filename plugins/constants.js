@@ -1,6 +1,6 @@
 const scopes =
   "user-read-private+user-read-email+playlist-read-private+user-top-read+user-read-recently-played";
-const redirectURI = "http://localhost:3000/chat";
+const redirectURI = "http://localhost:3000/";
 
 export const clientID = "3cfd4e08b47a4ff0a3f6d9e055785237";
 export const clientSecret = "d1b7a5e2eeef4b788cff63bc9e3fb1e1";

@@ -19,21 +19,9 @@ export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: {},
-      access_token: ""
+      person: {}
     };
   }
-
-  componentDidMount = () => {
-    let url = window.location.href;
-    if (url.indexOf("_token") > -1) {
-      let access_token = url
-        .split("_token=")[1]
-        .split("&")[0]
-        .trim();
-      this.setState({ access_token });
-    }
-  };
 
   getCurrentlyPlaying(token) {
     // Make a call using the token

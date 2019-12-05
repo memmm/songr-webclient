@@ -12,16 +12,41 @@ class LoginRegisterTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: {}
+      person: {},
+      access_token: ""
     };
   }
+
+  componentDidMount = () => {
+    let url = window.location.href;
+    if (url.indexOf("_token") > -1) {
+      let access_token = url
+        .split("_token=")[1]
+        .split("&")[0]
+        .trim();
+      this.setState({ access_token });
+      Router.push({
+        pathname: "/chat",
+        query: { access_token }
+      });
+    }
+  };
 
   handleChange = event => {
     this.setState({ name: event.target.value });
   };
   loginWithSpotify = event => {
     event.preventDefault();
-    document.location = spotifyWebApiURL;
+
+    const { access_token } = this.state;
+    if (access_token === "") {
+      document.location = spotifyWebApiURL;
+    } else {
+      Router.push({
+        pathname: "/chat",
+        query: { access_token }
+      });
+    }
   };
 
   login(e) {
@@ -69,7 +94,9 @@ class LoginRegisterTabs extends React.Component {
               className="btn-spotify w-100"
               onClick={e => this.loginWithSpotify(e)}
             >
-              Login with Spotify
+              {access_token !== ""
+                ? "Successful authentication!"
+                : "Login with Spotify"}
             </Button>
           </Form>
         </Tab>
