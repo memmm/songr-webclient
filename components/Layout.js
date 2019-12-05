@@ -1,4 +1,5 @@
 import Header from "./Header";
+import Footer from "./Footer";
 import Head from "next/head";
 import "./Layout.scss";
 
@@ -16,6 +17,7 @@ const Layout = props => (
     </Head>
     <Header />
     <div className="Content">{props.children}</div>
+    <Footer />
   </div>
 );
 

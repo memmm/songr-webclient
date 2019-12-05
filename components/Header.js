@@ -12,13 +12,6 @@ const Header = () => (
           </a>
         </Link>
       </li>
-
-      <li>
-        <Link href="chat">
-          <a>Chat</a>
-        </Link>
-      </li>
-
       <li>
         <Link href="settings">
           <a>Settings</a>

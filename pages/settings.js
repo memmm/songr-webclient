@@ -1,31 +1,43 @@
 import React from "react";
 import Layout from "../components/Layout";
-import ListItem from "../components/ListItem";
+import ListItems from "../components/ListItems";
+import axios from "axios";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
 
 export default class Settings extends React.Component {
-  static getInitialProps({ req, res }) {
-    return { songs: ["first", "second"] };
+  static async getInitialProps({ req, res }) {
+    let artists;
+    await axios
+      .post(`https://jsonplaceholder.typicode.com/users`, { name: "Vajak" })
+      .then(res => {
+        artists = res.data;
+        console.log(res.data);
+      });
+    return { songs: ["first", "second"], artists };
   }
 
   constructor(props) {
     super(props);
+    this.state = {
+      artists: []
+    };
     // this.state = { loggedIn: false }
   }
 
   changeSettings() {}
   addSong() {}
   addGenre() {}
-  addArtist() {}
+  addArtist(e) {
+    e.preventDefault();
+  }
   render() {
     return (
       <Layout>
@@ -86,11 +98,7 @@ export default class Settings extends React.Component {
                       </a>
                     </div>
 
-                    <ul className="pl-2">
-                      {this.props.songs.map((song, i) => (
-                        <ListItem key={i} item={song}></ListItem>
-                      ))}
-                    </ul>
+                    <ListItems items={this.props.songs}></ListItems>
                   </div>
                   <div className="pref-section">
                     <div className="d-flex justify-content-between my-2">
@@ -99,26 +107,17 @@ export default class Settings extends React.Component {
                         Add
                       </a>
                     </div>
-
-                    <ul className="pl-2">
-                      {this.props.songs.map((song, i) => (
-                        <ListItem key={i} item={song}></ListItem>
-                      ))}
-                    </ul>
+                    <ListItems items={this.props.songs}></ListItems>
                   </div>
                   <div className="pref-section">
                     <div className="d-flex justify-content-between my-2">
                       <h5>Artists</h5>
-                      <a href="" onClick={this.addGenre()}>
+                      <a href="" onClick={e => this.addArtist(e)}>
                         Add
                       </a>
                     </div>
 
-                    <ul className="pl-2">
-                      {this.props.songs.map((song, i) => (
-                        <ListItem key={i} item={song}></ListItem>
-                      ))}
-                    </ul>
+                    <ListItems items={this.state.artists}></ListItems>
                   </div>
                 </div>
               </div>

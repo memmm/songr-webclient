@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 //Own components
 import Layout from "../components/Layout";
 import LoginRegisterTabs from "../components/LoginRegisterTabs";
@@ -7,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
+import Button from "react-bootstrap/Button";
 
 const Home = () => (
   <Layout>
@@ -21,6 +23,11 @@ const Home = () => (
             alt="SongR welcome - connect through music"
             fluid
           /> */}
+          <Link href="/about">
+            <Button variant="primary" className="my-4 d-block">
+              Learn more
+            </Button>
+          </Link>
         </Col>
         <Col xs={12} md={{ span: 6, offset: 1 }}>
           <LoginRegisterTabs />
