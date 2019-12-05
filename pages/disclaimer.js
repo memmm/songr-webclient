@@ -16,7 +16,7 @@ export default class disclaimer extends Component {
             meanings: the web page: every web page in which the publisher
             includes a hyperlink to this disclaimer with the intention of making
             this disclaimer applicable to it; The publisher: the authorised
-            publisher of the web page, being Korsit based in Eindhoven; use(s):
+            publisher of the web page, being SongR based in Eindhoven; use(s):
             including loading, logging in, requesting, consulting, reading,
             viewing, listening, editing, filling in (forms), sending,
             (temporarily) copying, storing, forwarding, distributing, making use

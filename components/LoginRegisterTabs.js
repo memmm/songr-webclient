@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
+import { spotifyWebApiURL } from "../plugins/constants";
 
 class LoginRegisterTabs extends React.Component {
   constructor(props) {
@@ -14,22 +15,13 @@ class LoginRegisterTabs extends React.Component {
       person: {}
     };
   }
+
   handleChange = event => {
     this.setState({ name: event.target.value });
   };
   loginWithSpotify = event => {
     event.preventDefault();
-
-    const user = {
-      name: this.state.person
-    };
-
-    axios
-      .post(`https://jsonplaceholder.typicode.com/users`, { user })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      });
+    document.location = spotifyWebApiURL;
   };
 
   login(e) {
@@ -48,6 +40,7 @@ class LoginRegisterTabs extends React.Component {
   }
 
   render() {
+    const { access_token } = this.state;
     return (
       <Tabs defaultActiveKey="login">
         <Tab eventKey="login" title="Login">
@@ -76,7 +69,7 @@ class LoginRegisterTabs extends React.Component {
               className="btn-spotify w-100"
               onClick={e => this.loginWithSpotify(e)}
             >
-              Login With Spotify
+              Login with Spotify
             </Button>
           </Form>
         </Tab>
