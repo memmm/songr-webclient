@@ -1,5 +1,6 @@
 const scopes =
-  "user-read-private+user-read-email+playlist-read-private+user-top-read+user-read-recently-played+" +
+  "user-read-private+user-read-email+playlist-read-private+user-top-read+" +
+  //"user-read-recently-played+" +
   "streaming+app-remote-control+user-read-playback-state+user-read-currently-playing";
 const redirectURI = "http://localhost:3000/";
 

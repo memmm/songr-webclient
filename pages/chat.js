@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
+import nextCookie from "next-cookies";
 //bootstrap components
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -16,7 +17,7 @@ import {
   spotifyProfileURL,
   spotifyPlaylistURL,
   spotifyCurrentlyPlayingURL
-} from "../plugins/constants";
+} from "../utils/constants";
 import fetch from "isomorphic-unfetch";
 
 export default class Chat extends React.Component {
@@ -33,7 +34,7 @@ export default class Chat extends React.Component {
     axios
       .get(`https://api.spotify.com/v1/me/player`, {
         headers: {
-          Authorization: "Bearer " + this.props.access_token
+          Authorization: "Bearer " + this.props.spotify_token
         }
       })
       .then(res => {
@@ -97,13 +98,14 @@ export default class Chat extends React.Component {
 }
 
 Chat.getInitialProps = async function(context) {
-  const { access_token } = context.query;
-  const res = await fetch(spotifyProfileURL + access_token);
+  const { spotify_token } = nextCookie(context);
+  // const { access_token } = context.query;
+  const res = await fetch(spotifyProfileURL + spotify_token);
   const user = await res.json();
-  const res2 = await fetch(spotifyPlaylistURL + access_token);
+  const res2 = await fetch(spotifyPlaylistURL + spotify_token);
   const playlist = await res2.json();
   return {
-    access_token,
+    spotify_token,
     user,
     playlist: playlist.items
   };

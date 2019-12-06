@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import "./Layout.scss";
+import { logout } from "../utils/auth";
 
 const Header = () => (
   <nav className="header">
@@ -16,6 +17,9 @@ const Header = () => (
         <Link href="settings">
           <a>Settings</a>
         </Link>
+      </li>
+      <li>
+        <button onClick={logout}>Logout</button>
       </li>
     </ul>
 

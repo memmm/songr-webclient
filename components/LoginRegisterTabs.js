@@ -6,9 +6,8 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
-import { spotifyWebApiURL } from "../plugins/constants";
-//import nextCookie from "next-cookies";
-import cookie from "js-cookie";
+import { spotifyWebApiURL } from "../utils/constants";
+import { login } from "../utils/auth";
 
 class LoginRegisterTabs extends React.Component {
   constructor(props) {
@@ -19,7 +18,7 @@ class LoginRegisterTabs extends React.Component {
         password: "",
         email: ""
       },
-      access_token: "",
+      spotify_token: "",
       songr_token: ""
     };
   }
@@ -31,11 +30,8 @@ class LoginRegisterTabs extends React.Component {
         .split("_token=")[1]
         .split("&")[0]
         .trim();
-      this.setState({ access_token });
-      Router.push({
-        pathname: "/chat",
-        query: { access_token }
-      });
+
+      login({ token: access_token });
     }
   };
 
@@ -44,18 +40,7 @@ class LoginRegisterTabs extends React.Component {
   };
   loginWithSpotify = event => {
     event.preventDefault();
-
-    const { access_token } = this.state;
-    console.log(access_token);
-    cookie.set("spotify_token", access_token, { expires: 1 });
-    if (access_token === "") {
-      document.location = spotifyWebApiURL;
-    } else {
-      Router.push({
-        pathname: "/chat",
-        query: { access_token }
-      });
-    }
+    document.location = spotifyWebApiURL;
   };
 
   login(e) {
