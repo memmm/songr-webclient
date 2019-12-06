@@ -7,7 +7,7 @@ import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
 import { spotifyWebApiURL } from "../plugins/constants";
-import nextCookie from "next-cookies";
+//import nextCookie from "next-cookies";
 import cookie from "js-cookie";
 
 class LoginRegisterTabs extends React.Component {
@@ -46,7 +46,8 @@ class LoginRegisterTabs extends React.Component {
     event.preventDefault();
 
     const { access_token } = this.state;
-    cookie.set("token", access_token, { expires: 1 });
+    console.log(access_token);
+    cookie.set("spotify_token", access_token, { expires: 1 });
     if (access_token === "") {
       document.location = spotifyWebApiURL;
     } else {
