@@ -12,7 +12,11 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import axios from "axios";
-import { spotifyProfileURL, spotifyPlaylistURL } from "../plugins/constants";
+import {
+  spotifyProfileURL,
+  spotifyPlaylistURL,
+  spotifyCurrentlyPlayingURL
+} from "../plugins/constants";
 import fetch from "isomorphic-unfetch";
 
 export default class Chat extends React.Component {
@@ -23,12 +27,13 @@ export default class Chat extends React.Component {
     };
   }
 
-  getCurrentlyPlaying(token) {
+  getCurrentlyPlaying(e) {
+    e.preventDefault();
     // Make a call using the token
     axios
       .get(`https://api.spotify.com/v1/me/player`, {
         headers: {
-          Authorization: "Bearer " + token
+          Authorization: "Bearer " + this.props.access_token
         }
       })
       .then(res => {
@@ -73,7 +78,9 @@ export default class Chat extends React.Component {
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
                 <p>User</p>
                 <p>Now listening to</p>
-                <Button>Leave chat</Button>
+                <Button onClick={e => this.getCurrentlyPlaying(e)}>
+                  Leave chat
+                </Button>
               </div>
               <ChatStream />
             </Col>
@@ -96,6 +103,7 @@ Chat.getInitialProps = async function(context) {
   const res2 = await fetch(spotifyPlaylistURL + access_token);
   const playlist = await res2.json();
   return {
+    access_token,
     user,
     playlist: playlist.items
   };
