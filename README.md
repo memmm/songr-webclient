@@ -23,3 +23,7 @@ The pages share a layout (components/Layout.js), which contains the Header.js (f
 We use React Bootstrap, which is just a wrapper over Bootstrap.
 SCSS style files are used for more readable CSS - the React default CSS-in-JS is really crappy.
 If you want syntax highlighting for the CSS, install VSCode plugin 'vscode-styled-components'.
+
+## Spotify Integration
+
+We use Spotify's Authorization Code Flow.This flow first gets a code from the Spotify Accounts Service, then exchanges that code for an access token. The code-to-token exchange requires a secret key, and for security is done through direct server-to-server communication.

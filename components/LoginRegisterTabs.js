@@ -7,13 +7,20 @@ import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
 import { spotifyWebApiURL } from "../plugins/constants";
+import nextCookie from "next-cookies";
+import cookie from "js-cookie";
 
 class LoginRegisterTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: {},
-      access_token: ""
+      user: {
+        username: "",
+        password: "",
+        email: ""
+      },
+      access_token: "",
+      songr_token: ""
     };
   }
 
@@ -39,6 +46,7 @@ class LoginRegisterTabs extends React.Component {
     event.preventDefault();
 
     const { access_token } = this.state;
+    cookie.set("token", access_token, { expires: 1 });
     if (access_token === "") {
       document.location = spotifyWebApiURL;
     } else {
@@ -51,7 +59,18 @@ class LoginRegisterTabs extends React.Component {
 
   login(e) {
     e.preventDefault();
-    console.log("login");
+    axios
+      .post(`http://localhost:3000/signin`, {
+        username: this.props.user.username,
+        password: this.props.user.password
+      })
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.setState({
+          songr_token: res.data.token
+        });
+      });
 
     Router.push("/chat");
   }
@@ -72,12 +91,22 @@ class LoginRegisterTabs extends React.Component {
           <Form className="p-3">
             <Form.Group controlId="formLoginEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={this.state.user.email}
+                onChange={this.handleChange}
+              />
             </Form.Group>
 
             <Form.Group controlId="formLoginPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={this.state.user.password}
+                onChange={this.handleChange}
+              />
             </Form.Group>
             <Button
               variant="primary"
@@ -104,18 +133,33 @@ class LoginRegisterTabs extends React.Component {
           <Form className="p-3">
             <Form.Group controlId="formSignupEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={this.state.user.email}
+                onChange={this.handleChange}
+              />
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
             <Form.Group controlId="formSignupUsername">
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Username" />
+              <Form.Control
+                type="text"
+                placeholder="Username"
+                value={this.state.user.username}
+                onChange={this.handleChange}
+              />
             </Form.Group>
             <Form.Group controlId="formSignupPassword">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={this.state.user.password}
+                onChange={this.handleChange}
+              />
             </Form.Group>
             <Form.Group controlId="formAcceptCheckbox">
               <Form.Check type="checkbox" label="I accept everything." />
