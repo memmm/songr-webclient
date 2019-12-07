@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "react-bootstrap/Image";
 
-export default function ChatCard() {
+export default function ChatCard(props) {
   return (
     <div className="chat-card d-flex align-items-center py-2">
       <div>
@@ -11,7 +11,7 @@ export default function ChatCard() {
         />
       </div>
       <div className="d-none d-md-block">
-        <h4>Name</h4>
+        <h4>{props.match.name}</h4>
         <p className="mb-0">Last message chunk</p>
         <p className="mb-0">Reason you connected</p>
       </div>

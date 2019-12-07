@@ -13,17 +13,19 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import axios from "axios";
-import {
-  spotifyProfileURL,
-  spotifyCurrentlyPlayingURL
-} from "../utils/constants";
+import { spotifyProfileURL } from "../utils/constants";
 import fetch from "isomorphic-unfetch";
 
 export default class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      person: {}
+      matches: [
+        { name: "Zaphod Beeblebrox" },
+        { name: "Arthur Dent" },
+        { name: "Marvin" }
+      ],
+      currentChatPartner: null
     };
   }
 
@@ -47,8 +49,12 @@ export default class Chat extends React.Component {
                 </div>
               </div>
               <div className="d-flex d-md-block my-2 my-md-0">
-                {[...Array(4)].map((x, i) => (
-                  <ChatCard key={i}></ChatCard>
+                {this.state.matches.map((x, i) => (
+                  <ChatCard
+                    key={i}
+                    match={x}
+                    onClick={(this.state.currentChatPartner = x)}
+                  ></ChatCard>
                 ))}
               </div>
             </Col>
