@@ -26,7 +26,9 @@ export default class MusicController extends React.Component {
           artist: res.data.item ? res.data.item.artists[0].name : "",
           song: res.data.item ? res.data.item.name : "",
           is_playing: res.data.is_playing,
-          ms_left: res.data.item.duration_ms - res.data.progress_ms
+          ms_left: res.data.item
+            ? res.data.item.duration_ms - res.data.progress_ms
+            : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
         setTimeout(() => this.getCurrentlyPlaying(), this.state.ms_left);
       });
@@ -39,7 +41,8 @@ export default class MusicController extends React.Component {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">
         <p>
-          {this.state.artist}: {this.state.song}
+          {this.state.artist}
+          {this.state.artist ? " : " : "Silence..."} {this.state.song}
         </p>
         <div className="ml-auto">
           <div className="btn btn-prev">

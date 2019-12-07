@@ -96,9 +96,10 @@ h5 {
 .chat-container {
     background: $secondary;
     box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
+    height: 36rem;
 
     .chat-stream {
-        min-height: 24rem;
+        height: 23.5rem;
 
         @media screen and (min-width: 768px) {
             border: 1px solid #24282e;
@@ -121,6 +122,14 @@ h5 {
 
         @media screen and (min-width: 768px) {
             border-bottom: 1px solid #343a40;
+        }
+    }
+
+    .chat-input-field {
+        border: 1px solid grey;
+
+        &:focus {
+            box-shadow: none;
         }
     }
 }

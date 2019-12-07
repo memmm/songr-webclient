@@ -15,13 +15,19 @@ export default function ChatStream() {
     setValue(e.target.value);
   }
 
+  function submitOnEnter(e) {
+    if (e.keyCode === 13) {
+      sendMessage(e);
+    }
+  }
+
   function sendMessage(e) {
     if (value) setList(messages.concat(value));
     setValue("");
   }
   return (
-    <div className="flex-grow-1 chat-stream p-md-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-end">
-      <div>
+    <div className="chat-stream flex-grow-1 p-md-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-end">
+      <div className="overflow-auto">
         {messages.map((x, i) => (
           <Message key={i} message={x}></Message>
         ))}
@@ -31,9 +37,17 @@ export default function ChatStream() {
           placeholder="Message"
           aria-label="Message"
           onChange={handleChange}
+          className="chat-input-field"
+          tabIndex="-1"
+          onKeyUp={submitOnEnter}
+          autoFocus
         />
         <InputGroup.Append>
-          <Button variant="outline-secondary" onClick={sendMessage}>
+          <Button
+            variant="outline-secondary"
+            onClick={sendMessage}
+            tabIndex="0"
+          >
             SEND
           </Button>
         </InputGroup.Append>
