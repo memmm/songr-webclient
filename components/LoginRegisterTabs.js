@@ -51,8 +51,6 @@ class LoginRegisterTabs extends React.Component {
         password: this.props.user.password
       })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         this.setState({
           songr_token: res.data.token
         });

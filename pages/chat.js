@@ -15,7 +15,6 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import {
   spotifyProfileURL,
-  spotifyPlaylistURL,
   spotifyCurrentlyPlayingURL
 } from "../utils/constants";
 import fetch from "isomorphic-unfetch";
@@ -28,30 +27,8 @@ export default class Chat extends React.Component {
     };
   }
 
-  getCurrentlyPlaying(e) {
-    e.preventDefault();
-    // Make a call using the token
-    axios
-      .get(`https://api.spotify.com/v1/me/player`, {
-        headers: {
-          Authorization: "Bearer " + this.props.spotify_token
-        }
-      })
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-        this.setState({
-          item: res.data.item,
-          is_playing: res.data.is_playing,
-          progress_ms: res.data.progress_ms
-        });
-      });
-  }
-
   render() {
-    const { user, playlist } = this.props;
-    console.log("playlist", playlist);
-    console.log("user", user);
+    const { user, spotify_token } = this.props;
     return (
       <Layout>
         <Container className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto">
@@ -88,7 +65,7 @@ export default class Chat extends React.Component {
           </Row>
           <Row>
             <Col xs={12} className="p-3">
-              <MusicController />
+              <MusicController token={spotify_token} />
             </Col>
           </Row>
         </Container>
@@ -99,14 +76,10 @@ export default class Chat extends React.Component {
 
 Chat.getInitialProps = async function(context) {
   const { spotify_token } = nextCookie(context);
-  // const { access_token } = context.query;
   const res = await fetch(spotifyProfileURL + spotify_token);
   const user = await res.json();
-  const res2 = await fetch(spotifyPlaylistURL + spotify_token);
-  const playlist = await res2.json();
   return {
     spotify_token,
-    user,
-    playlist: playlist.items
+    user
   };
 };
