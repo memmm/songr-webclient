@@ -7,6 +7,7 @@ export default class MusicController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.timeoutFetchCurrent = null;
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   }
 
@@ -30,9 +31,16 @@ export default class MusicController extends React.Component {
             ? res.data.item.duration_ms - res.data.progress_ms
             : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
-        setTimeout(() => this.getCurrentlyPlaying(), this.state.ms_left);
+        this.timeoutFetchCurrent = setTimeout(
+          () => this.getCurrentlyPlaying(),
+          this.state.ms_left
+        );
       });
   }
+
+  componentWillUnmount = () => {
+    clearTimeout(this.timeoutFetchCurrent);
+  };
 
   togglePlay(e) {
     e.target.classList.toggle("pause");

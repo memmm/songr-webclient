@@ -1,20 +1,21 @@
 import React from "react";
 import Link from "next/link";
+import axios from "axios";
+import nextCookie from "next-cookies";
+import fetch from "isomorphic-unfetch";
+
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import nextCookie from "next-cookies";
+import { spotifyProfileURL } from "../utils/constants";
+
 //bootstrap components
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-
-import axios from "axios";
-import { spotifyProfileURL } from "../utils/constants";
-import fetch from "isomorphic-unfetch";
 
 export default class Chat extends React.Component {
   constructor(props) {

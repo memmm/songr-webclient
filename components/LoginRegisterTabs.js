@@ -7,68 +7,66 @@ import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
 import { spotifyWebApiURL } from "../utils/constants";
-import { login } from "../utils/auth";
+import { login, loginWithSpotify } from "../utils/auth";
+import { addUser, actions } from "../store/userSlice";
+import { connect } from "react-redux";
 
 class LoginRegisterTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {
-        username: "",
-        password: "",
-        email: ""
-      },
-      spotify_token: "",
-      songr_token: ""
+      username: "",
+      password: "",
+      email: ""
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount = () => {
     let url = window.location.href;
     if (url.indexOf("_token") > -1) {
-      let access_token = url
+      let spotify_token = url
         .split("_token=")[1]
         .split("&")[0]
         .trim();
 
-      login({ token: access_token });
+      loginWithSpotify({ token: spotify_token });
     }
   };
 
   handleChange = event => {
-    this.setState({ name: event.target.value });
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value });
   };
-  loginWithSpotify = event => {
+
+  onClickloginWithSpotify = event => {
     event.preventDefault();
     document.location = spotifyWebApiURL;
   };
 
-  login(e) {
+  onClicklogin(e) {
     e.preventDefault();
-    axios
-      .post(`http://localhost:3000/signin`, {
-        username: this.props.user.username,
-        password: this.props.user.password
-      })
-      .then(res => {
-        this.setState({
-          songr_token: res.data.token
-        });
-      });
-
-    Router.push("/chat");
+    login({ username: this.state.username, password: this.state.password });
   }
+
   registerWithSpotify(e) {
     e.preventDefault();
-    console.log("reg with spoty");
+    this.props.dispatch(
+      actions.addUser({
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+      })
+    );
+    document.location = spotifyWebApiURL;
   }
+
   register(e) {
     e.preventDefault();
-    console.log("reg");
+    document.location = spotifyWebApiURL;
   }
 
   render() {
-    const { access_token } = this.state;
     return (
       <Tabs defaultActiveKey="login">
         <Tab eventKey="login" title="Login">
@@ -78,8 +76,9 @@ class LoginRegisterTabs extends React.Component {
               <Form.Control
                 type="email"
                 placeholder="Enter email"
-                value={this.state.user.email}
-                onChange={this.handleChange}
+                value={this.state.email}
+                name="email"
+                onChange={e => this.handleChange(e)}
               />
             </Form.Group>
 
@@ -88,15 +87,16 @@ class LoginRegisterTabs extends React.Component {
               <Form.Control
                 type="password"
                 placeholder="Password"
-                value={this.state.user.password}
-                onChange={this.handleChange}
+                value={this.state.password}
+                name="password"
+                onChange={e => this.handleChange(e)}
               />
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
               className="w-100"
-              onClick={e => this.login(e)}
+              onClick={e => this.onClicklogin(e)}
             >
               Login
             </Button>
@@ -105,14 +105,13 @@ class LoginRegisterTabs extends React.Component {
               variant="primary"
               type="submit"
               className="btn-spotify w-100"
-              onClick={e => this.loginWithSpotify(e)}
+              onClick={e => this.onClickloginWithSpotify(e)}
             >
-              {access_token !== ""
-                ? "Successful authentication!"
-                : "Login with Spotify"}
+              Login with Spotify
             </Button>
           </Form>
         </Tab>
+
         <Tab eventKey="register" title="Register">
           <Form className="p-3">
             <Form.Group controlId="formSignupEmail">
@@ -120,7 +119,8 @@ class LoginRegisterTabs extends React.Component {
               <Form.Control
                 type="email"
                 placeholder="Enter email"
-                value={this.state.user.email}
+                name="email"
+                value={this.state.email}
                 onChange={this.handleChange}
               />
               <Form.Text className="text-muted">
@@ -132,7 +132,8 @@ class LoginRegisterTabs extends React.Component {
               <Form.Control
                 type="text"
                 placeholder="Username"
-                value={this.state.user.username}
+                name="username"
+                value={this.state.username}
                 onChange={this.handleChange}
               />
             </Form.Group>
@@ -141,7 +142,8 @@ class LoginRegisterTabs extends React.Component {
               <Form.Control
                 type="password"
                 placeholder="Password"
-                value={this.state.user.password}
+                name="password"
+                value={this.state.password}
                 onChange={this.handleChange}
               />
             </Form.Group>
@@ -172,4 +174,4 @@ class LoginRegisterTabs extends React.Component {
   }
 }
 
-export default LoginRegisterTabs;
+export default connect()(LoginRegisterTabs);

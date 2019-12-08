@@ -3,7 +3,7 @@ import Image from "react-bootstrap/Image";
 
 export default function ChatCard(props) {
   return (
-    <div className="chat-card d-flex align-items-center py-2">
+    <a className="chat-card d-flex align-items-center py-2">
       <div>
         <Image
           src="/static/pusheen.jpg"
@@ -15,6 +15,6 @@ export default function ChatCard(props) {
         <p className="mb-0">Last message chunk</p>
         <p className="mb-0">Reason you connected</p>
       </div>
-    </div>
+    </a>
   );
 }

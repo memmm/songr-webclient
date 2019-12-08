@@ -2,6 +2,13 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Head from "next/head";
 import "./Layout.scss";
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import rootReducer from "../store/index.js";
+
+const store = configureStore({
+  reducer: rootReducer
+});
 
 const Layout = props => (
   <div className="Layout">
@@ -15,9 +22,11 @@ const Layout = props => (
         crossOrigin="anonymous"
       />
     </Head>
-    <Header />
-    <div className="Content">{props.children}</div>
-    <Footer />
+    <Provider store={store}>
+      <Header />
+      <div className="Content">{props.children}</div>
+      <Footer />
+    </Provider>
   </div>
 );
 
