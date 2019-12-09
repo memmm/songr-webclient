@@ -3,7 +3,10 @@ import Image from "react-bootstrap/Image";
 
 export default function ChatCard(props) {
   return (
-    <a className="chat-card d-flex align-items-center py-2">
+    <a
+      className="chat-card d-flex align-items-center py-2"
+      onClick={props.onClick}
+    >
       <div>
         <Image
           src="/static/pusheen.jpg"

@@ -43,6 +43,8 @@ body,
         a {
             display: flex;
             align-items: center;
+            cursor: pointer;
+            color: $text;
         }
     }
 
@@ -50,6 +52,11 @@ body,
         color: white;
         font-family: 'Oleo Script Swash Caps',
             cursive;
+    }
+
+    .loggedin-panel {
+        border-radius: 25px;
+        border: 1px solid white;
     }
 }
 

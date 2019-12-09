@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./Layout.scss";
 import { logout } from "../utils/auth";
 import nextCookie from "next-cookies";
+import Button from "react-bootstrap/Button";
 
 export default class Header extends React.Component {
   render() {
@@ -10,20 +11,23 @@ export default class Header extends React.Component {
       <nav className="header">
         <ul>
           <li>
-            <Link href="/">
+            <Link href={nextCookie(this.context).spotify_token ? "/chat" : "/"}>
               <a>
                 <h1 className="title">SongR</h1>
               </a>
             </Link>
           </li>
-          <li>
-            <Link href="settings">
-              <a>Settings</a>
-            </Link>
-          </li>
-          <li>
-            <button onClick={logout}>Logout</button>
-          </li>
+          {nextCookie(this.context).spotify_token && (
+            <li className="loggedin-panel">
+              <Link href="settings">
+                <a className="settings-link mr-3">Settings</a>
+              </Link>
+
+              <a onClick={logout} className="logout-btn">
+                Logout
+              </a>
+            </li>
+          )}
         </ul>
 
         <style jsx>{`
@@ -56,7 +60,3 @@ export default class Header extends React.Component {
     );
   }
 }
-
-Header.getInitialProps = async function(context) {
-  const { spotify_token } = nextCookie(context);
-};
