@@ -54,7 +54,7 @@ export default class Chat extends React.Component {
                   <ChatCard
                     key={i}
                     match={x}
-                    onClick={(this.state.currentChatPartner = x)}
+                    onClick={() => this.setState({ currentChatPartner: x })}
                   ></ChatCard>
                 ))}
               </div>
