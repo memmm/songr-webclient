@@ -7,7 +7,7 @@ import axios from "axios";
 import "./LoginRegisterTabs.scss";
 import Router from "next/router";
 import { spotifyWebApiURL } from "../utils/constants";
-import { login, loginWithSpotify } from "../utils/auth";
+import { loginWithSpotify, login } from "../utils/auth";
 import { addUser, actions } from "../store/userSlice";
 import { connect } from "react-redux";
 
@@ -46,6 +46,24 @@ class LoginRegisterTabs extends React.Component {
 
   onClicklogin(e) {
     e.preventDefault();
+    axios
+      .post(`http://localhost:3000/signin`, {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then(res => {})
+      .catch(err => {
+        console.error("Login was unsuccessful. " + err);
+      })
+      .finally(() => {
+        this.props.dispatch(
+          actions.addUser({
+            username: this.state.username,
+            password: this.state.password
+          })
+        );
+      });
+
     login({ username: this.state.username, password: this.state.password });
   }
 

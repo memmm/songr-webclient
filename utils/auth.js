@@ -3,36 +3,36 @@ import Router from "next/router";
 import nextCookie from "next-cookies";
 import cookie from "js-cookie";
 import { spotifyProfileURL } from "./constants";
-import { connect } from "react-redux";
+import axios from "axios";
 
 export const login = ({ authObject }) => {
-  axios
-      .post(`http://localhost:3000/signin`, {
-        ...authObject
-      })
-      .then(res => {
-        cookie.set("auth_token", token, { expires: 1 });
-      })
-      .catch(err => {
-        console.error("Login was unsuccessful. " + err);
-      })
-      .finally(() => {
-        dispatch(
-          actions.addUser({
-            ...authObject
-          })
-        );
-      });
-  
+  // axios
+  //   .post(`http://localhost:3000/signin`, {
+  //     ...authObject
+  //   })
+  //   .then(res => {
+  //     cookie.set("auth_token", res.data.token, { expires: 1 });
+  //   })
+  //   .catch(err => {
+  //     console.error("Login was unsuccessful. " + err);
+  //   });
+  //TODO: figure out how to use dispatch outside class
+  // .finally(() => {
+  //   dispatch(
+  //     actions.addUser({
+  //       ...authObject
+  //     })
+  //   );
+  // });
 
   Router.push("/chat");
 };
 
-export const loginWithSpotify = ({ token }) => {
+export const loginWithSpotify = async ({ token }) => {
   cookie.set("spotify_token", token, { expires: 1 });
   const res = await fetch(spotifyProfileURL + token);
   const user = await res.json();
-  login({username: user.display_name, email: user.email});
+  login({ username: user.display_name, email: user.email });
 };
 
 export const auth = ctx => {
