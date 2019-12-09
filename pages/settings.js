@@ -16,7 +16,9 @@ export default class Settings extends React.Component {
   static async getInitialProps({ req, res }) {
     let artists;
     await axios
-      .post(`https://jsonplaceholder.typicode.com/users`, { name: "Vajak" })
+      .post(`https://jsonplaceholder.typicode.com/users`, {
+        name: "Vajak"
+      })
       .then(res => {
         artists = res.data;
         console.log(res.data);
@@ -38,6 +40,10 @@ export default class Settings extends React.Component {
   addArtist(e) {
     e.preventDefault();
   }
+  onClickloginWithSpotify = event => {
+    event.preventDefault();
+    document.location = spotifyWebApiURL;
+  };
   render() {
     return (
       <Layout>
@@ -81,7 +87,11 @@ export default class Settings extends React.Component {
                 <Form.Text className="text-muted">
                   Connect now to enjoy everything Songr has to offer!
                 </Form.Text>
-                <Button className="mt-3 w-100" variant="outline-secondary">
+                <Button
+                  className="mt-3 w-100"
+                  variant="outline-secondary"
+                  onClick={e => this.onClickloginWithSpotify(e)}
+                >
                   Connect
                 </Button>
               </div>
