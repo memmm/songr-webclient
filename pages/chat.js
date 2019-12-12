@@ -9,6 +9,7 @@ import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { spotifyProfileURL } from "../utils/constants";
+import { connect } from "react-redux";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -17,7 +18,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-export default class Chat extends React.Component {
+class Chat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -118,3 +119,5 @@ Chat.getInitialProps = async function(context) {
     user
   };
 };
+
+export default connect()(Chat);

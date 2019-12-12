@@ -24,7 +24,9 @@ const Layout = props => (
     </Head>
     <Provider store={store}>
       <Header />
-      <div className="Content">{props.children}</div>
+      <div className="Content" store={store}>
+        {props.children}
+      </div>
       <Footer />
     </Provider>
   </div>

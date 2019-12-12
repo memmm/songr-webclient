@@ -29,6 +29,7 @@ export const login = ({ authObject }) => {
 };
 
 export const loginWithSpotify = async ({ token }) => {
+  console.log(token);
   cookie.set("spotify_token", token, { expires: 1 });
   const res = await fetch(spotifyProfileURL + token);
   const user = await res.json();

@@ -192,4 +192,10 @@ class LoginRegisterTabs extends React.Component {
   }
 }
 
+// const mapStateToProps = state => {
+//   return {
+//     matches: state.matches
+//   };
+// };
+
 export default connect()(LoginRegisterTabs);
