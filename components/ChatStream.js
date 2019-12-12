@@ -2,6 +2,7 @@ import React from "react";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
+import axios from "axios";
 import Message from "./Message";
 
 export default function ChatStream() {
@@ -23,6 +24,16 @@ export default function ChatStream() {
 
   function sendMessage(e) {
     if (value) setList(messages.concat(value));
+
+    //temp user data
+    let requestBody = {
+        userId: "1",
+        userName: "temp",
+        message: value
+    }
+
+    var response = axios.post("http://localhost:9090/sendmessage", requestBody);
+
     setValue("");
   }
   return (

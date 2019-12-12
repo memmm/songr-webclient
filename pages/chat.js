@@ -46,7 +46,7 @@ export default class Chat extends React.Component {
                   </Form>
                 </div>
                 <div>
-                  <Button>NEW CHAT</Button>
+                  <Button onClick={this.newChat()}>NEW CHAT</Button>
                 </div>
               </div>
               <div className="d-flex d-md-block my-2 my-md-0">
@@ -79,6 +79,34 @@ export default class Chat extends React.Component {
       </Layout>
     );
   }
+
+  //Event handling:
+
+  //Join Queue
+    newChat(){
+      //To-do: Differentiate between radiobuttons
+        this.joinPreferenceQueue();
+    }
+    //Join Preference Queue
+    joinPreferenceQueue(){
+      //Mock data, needs to be active user's data
+        var userId = "1";
+        var userName = "Temp";
+        var token = "x";
+
+        var url = "localhost:9090/joinpreferencequeue/"+userId+"/"+userName; // +"/"+token;
+        axios.post(url);
+    }
+
+    //Join Spotify Queue
+    joinSpotifyQueue(){
+      axios.post("localhost:9090/joinspotifyqueue");
+    }
+
+    //Leave Chat
+    leaveChat(){
+
+    }
 }
 
 Chat.getInitialProps = async function(context) {
