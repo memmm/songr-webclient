@@ -9,7 +9,10 @@ import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { spotifyProfileURL } from "../utils/constants";
+import { loginUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
+import withRedux from "next-redux-wrapper";
+import store from "../store/index";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -84,30 +87,28 @@ class Chat extends React.Component {
   //Event handling:
 
   //Join Queue
-    newChat(){
-      //To-do: Differentiate between radiobuttons
-        this.joinPreferenceQueue();
-    }
-    //Join Preference Queue
-    joinPreferenceQueue(){
-      //Mock data, needs to be active user's data
-        var userId = "1";
-        var userName = "Temp";
-        var token = "x";
+  newChat() {
+    //To-do: Differentiate between radiobuttons
+    this.joinPreferenceQueue();
+  }
+  //Join Preference Queue
+  joinPreferenceQueue() {
+    //Mock data, needs to be active user's data
+    var userId = "1";
+    var userName = "Temp";
+    var token = "x";
 
-        var url = "localhost:9090/joinpreferencequeue/"+userId+"/"+userName; // +"/"+token;
-        axios.post(url);
-    }
+    var url = "localhost:9090/joinpreferencequeue/" + userId + "/" + userName; // +"/"+token;
+    axios.post(url);
+  }
 
-    //Join Spotify Queue
-    joinSpotifyQueue(){
-      axios.post("localhost:9090/joinspotifyqueue");
-    }
+  //Join Spotify Queue
+  joinSpotifyQueue() {
+    axios.post("localhost:9090/joinspotifyqueue");
+  }
 
-    //Leave Chat
-    leaveChat(){
-
-    }
+  //Leave Chat
+  leaveChat() {}
 }
 
 Chat.getInitialProps = async function(context) {
@@ -120,4 +121,13 @@ Chat.getInitialProps = async function(context) {
   };
 };
 
-export default connect()(Chat);
+const mapStateToProps = state => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  loginUser
+};
+
+export default withRedux(store)(Chat);
