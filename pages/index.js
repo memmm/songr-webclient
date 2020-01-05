@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { connect } from "react-redux";
+
 //Own components
 import Layout from "../components/Layout";
 import LoginRegisterTabs from "../components/LoginRegisterTabs";
@@ -24,9 +26,7 @@ const Home = () => (
             fluid
           /> */}
           <Link href="/about">
-            <Button variant="primary" className="my-4 d-block">
-              Learn more
-            </Button>
+            <Button className="my-4 d-block btn-transparent">Learn more</Button>
           </Link>
         </Col>
         <Col xs={12} md={{ span: 6, offset: 1 }}>
@@ -37,4 +37,5 @@ const Home = () => (
   </Layout>
 );
 
-export default Home;
+
+export default connect()(Home);

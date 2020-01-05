@@ -5,34 +5,15 @@ import cookie from "js-cookie";
 import { spotifyProfileURL } from "./constants";
 import axios from "axios";
 
-export const login = ({ authObject }) => {
-  // axios
-  //   .post(`http://localhost:3000/signin`, {
-  //     ...authObject
-  //   })
-  //   .then(res => {
-  //     cookie.set("auth_token", res.data.token, { expires: 1 });
-  //   })
-  //   .catch(err => {
-  //     console.error("Login was unsuccessful. " + err);
-  //   });
-  //TODO: figure out how to use dispatch outside class
-  // .finally(() => {
-  //   dispatch(
-  //     actions.addUser({
-  //       ...authObject
-  //     })
-  //   );
-  // });
-
-  Router.push("/chat");
-};
+export const login = ({ authObject }) => {};
 
 export const loginWithSpotify = async ({ token }) => {
+  console.log(token);
   cookie.set("spotify_token", token, { expires: 1 });
   const res = await fetch(spotifyProfileURL + token);
   const user = await res.json();
   login({ username: user.display_name, email: user.email });
+  Router.push("/chat");
 };
 
 export const auth = ctx => {

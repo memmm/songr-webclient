@@ -2,13 +2,17 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Head from "next/head";
 import "./Layout.scss";
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
-import rootReducer from "../store/index.js";
+import AuthRoute from "../utils/AuthRoute";
 
-const store = configureStore({
-  reducer: rootReducer
-});
+//Redux related
+import { Provider } from "react-redux";
+import store from "../store/index.js";
+import { connect } from "react-redux";
+import withRedux from "next-redux-wrapper";
+
+
+
+
 
 const Layout = props => (
   <div className="Layout">
@@ -22,11 +26,9 @@ const Layout = props => (
         crossOrigin="anonymous"
       />
     </Head>
-    <Provider store={store}>
       <Header />
       <div className="Content">{props.children}</div>
       <Footer />
-    </Provider>
   </div>
 );
 

@@ -8,7 +8,7 @@ import "./LoginRegisterTabs.scss";
 import Router from "next/router";
 import { spotifyWebApiURL } from "../utils/constants";
 import { loginWithSpotify, login } from "../utils/auth";
-import { addUser, actions } from "../store/userSlice";
+import { loginUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
 
 class LoginRegisterTabs extends React.Component {
@@ -19,7 +19,6 @@ class LoginRegisterTabs extends React.Component {
       password: "",
       email: ""
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount = () => {
@@ -41,41 +40,27 @@ class LoginRegisterTabs extends React.Component {
 
   onClickloginWithSpotify = event => {
     event.preventDefault();
+
     document.location = spotifyWebApiURL;
   };
 
   onClicklogin(e) {
     e.preventDefault();
-    axios
-      .post(`http://localhost:3000/signin`, {
-        username: this.state.username,
-        password: this.state.password
-      })
-      .then(res => {})
-      .catch(err => {
-        console.error("Login was unsuccessful. " + err);
-      })
-      .finally(() => {
-        this.props.dispatch(
-          actions.addUser({
-            username: this.state.username,
-            password: this.state.password
-          })
-        );
-      });
-
-    login({ username: this.state.username, password: this.state.password });
+    const userData = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    this.props.loginUser(userData);
   }
 
   registerWithSpotify(e) {
     e.preventDefault();
-    this.props.dispatch(
-      actions.addUser({
-        username: this.state.username,
-        email: this.state.email,
-        password: this.state.password
-      })
-    );
+    const userData = {
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password
+    };
+
     document.location = spotifyWebApiURL;
   }
 
@@ -192,4 +177,13 @@ class LoginRegisterTabs extends React.Component {
   }
 }
 
-export default connect()(LoginRegisterTabs);
+const mapStateToProps = state => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  loginUser
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(LoginRegisterTabs);
