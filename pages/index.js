@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import { connect } from "react-redux";
+
 //Own components
 import Layout from "../components/Layout";
 import LoginRegisterTabs from "../components/LoginRegisterTabs";
@@ -35,4 +37,5 @@ const Home = () => (
   </Layout>
 );
 
-export default Home;
+
+export default connect()(Home);

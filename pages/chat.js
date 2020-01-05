@@ -130,4 +130,4 @@ const mapActionsToProps = {
   loginUser
 };
 
-export default withRedux(store)(Chat);
+export default connect()(Chat);

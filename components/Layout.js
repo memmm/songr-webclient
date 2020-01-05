@@ -7,10 +7,12 @@ import AuthRoute from "../utils/AuthRoute";
 //Redux related
 import { Provider } from "react-redux";
 import store from "../store/index.js";
+import { connect } from "react-redux";
+import withRedux from "next-redux-wrapper";
 
-import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000";
+
+
 
 const Layout = props => (
   <div className="Layout">
@@ -24,11 +26,9 @@ const Layout = props => (
         crossOrigin="anonymous"
       />
     </Head>
-    <Provider store={store}>
       <Header />
       <div className="Content">{props.children}</div>
       <Footer />
-    </Provider>
   </div>
 );
 
