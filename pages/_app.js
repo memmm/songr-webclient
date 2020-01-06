@@ -3,6 +3,8 @@ import App, { Container } from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import initStore from '../store';
 import axios from "axios";
+//Google Analytics plugin
+import { initGA, logPageView } from '../utils/analytics'
 
 
 axios.defaults.baseURL = "http://localhost:3000";
@@ -21,6 +23,14 @@ export default withRedux(makeStore, { debug: true })(
             : {})
         }
       };
+    }
+
+    componentDidMount () {
+      if (!window.GA_INITIALIZED) {
+        initGA()
+        window.GA_INITIALIZED = true
+      }
+      logPageView()
     }
 
     render() {
