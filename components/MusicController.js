@@ -48,9 +48,9 @@ export default class MusicController extends React.Component {
   render() {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">
-        <p>
+        <p className="mb-0">
           {this.state.artist}
-          {this.state.artist ? " : " : "Silence..."} {this.state.song}
+          {this.state.artist ? ": " : "Silence..."} <b>{this.state.song}</b>
         </p>
         <div className="ml-auto">
           <div className="btn btn-prev">

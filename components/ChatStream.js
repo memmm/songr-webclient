@@ -32,7 +32,7 @@ export default function ChatStream() {
         message: value
     }
 
-    var response = axios.post("http://localhost:9090/sendmessage", requestBody);
+    //var response = axios.post("http://localhost:9090/sendmessage", requestBody);
 
     setValue("");
   }

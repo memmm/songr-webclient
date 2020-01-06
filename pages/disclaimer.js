@@ -9,23 +9,30 @@ export default class disclaimer extends Component {
   render() {
     return (
       <Layout>
-        <Container className="section mt-md-5 p-4">
+        <Container className="section mt-md-5 p-4 p-md-5">
           <h1>Disclaimer</h1>
           <div>
             In this disclaimer, the following terms shall have the following
-            meanings: the web page: every web page in which the publisher
+            meanings: 
+            <ul>
+              <li>The web page: every web page in which the publisher
             includes a hyperlink to this disclaimer with the intention of making
-            this disclaimer applicable to it; The publisher: the authorised
-            publisher of the web page, being SongR based in Eindhoven; use(s):
+            this disclaimer applicable to it;</li>
+            <li>The publisher: the authorised
+            publisher of the web page, being SongR based in Eindhoven;</li>
+            <li>use(s):
             including loading, logging in, requesting, consulting, reading,
             viewing, listening, editing, filling in (forms), sending,
             (temporarily) copying, storing, forwarding, distributing, making use
-            of services, committing legal acts (e.g. buying, renting); you: the
+            of services, committing legal acts (e.g. buying, renting);</li>
+            <li>you: the
             natural or legal person, whether or not represented, who uses the
-            web page; the content: including texts, images, hyperlinks, sound
-            and/or video fragments and/or other objects; damage: direct or
+            web page;</li> <li>the content: including texts, images, hyperlinks, sound
+            and/or video fragments and/or other objects; </li> <li>damage: direct or
             indirect damage of any nature whatsoever, including lost data and
-            business, lost turnover, profit or other economic disadvantage. The
+            business, lost turnover, profit or other economic disadvantage. </li> 
+            </ul>
+            The
             following applies to this web page. By using this web page you agree
             with this disclaimer. The publisher makes every effort to regularly
             update and/or supplement the content of the web page. Despite this

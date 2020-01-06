@@ -20,6 +20,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
 class Chat extends React.Component {
   constructor(props) {
@@ -65,8 +66,11 @@ class Chat extends React.Component {
             </Col>
             <Col xs={12} md={8} className="d-flex flex-column">
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
-                <p>User</p>
-                <p>Now listening to</p>
+              <Image
+                src="/static/pusheen.jpg"
+                className="partner-thumbnail img-thumbnail rounded-circle mr-3"
+              />
+                <p className="mb-0">Now listening to Six Foe: <b>Seasons</b></p>
                 <Button onClick={e => this.getCurrentlyPlaying(e)}>
                   Leave chat
                 </Button>

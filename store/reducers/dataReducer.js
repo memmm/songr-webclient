@@ -2,7 +2,7 @@ import { SET_MATCH, SET_MESSAGE, DELETE_MATCH } from "../types";
 
 const initialState = {
   messages: [],
-  scream: {},
+  message: {},
   loading: false
 };
 
