@@ -18,6 +18,8 @@ class Layout extends React.Component {
         <meta name="og:title" property="og:title" content="Your Awesome Open Graph Title"></meta>
         <meta name="og:description" content="We believe music should be a shared experience. Find people who can
           truly understand your musical taste and have a discussion!"></meta>
+        <meta name="og:type" property="og:type" content="website"></meta>
+        <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg" />
         <link rel="icon" href="/static/favicon.ico" importance="low" />
         <link
           rel="stylesheet"

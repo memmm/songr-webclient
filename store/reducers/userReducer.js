@@ -12,6 +12,8 @@ const initialState = {
   authenticated: false,
   spotifyToken: false,
   credentials: {},
+  userName: {},
+  email: {},
   tracks: [],
   artists: [],
   genres: []
