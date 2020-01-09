@@ -11,8 +11,6 @@ import ChatStream from "../components/ChatStream";
 import { spotifyProfileURL } from "../utils/constants";
 import { loginUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
-import withRedux from "next-redux-wrapper";
-import store from "../store/index";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
