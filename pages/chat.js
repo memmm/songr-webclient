@@ -3,14 +3,13 @@ import Link from "next/link";
 import axios from "axios";
 import nextCookie from "next-cookies";
 import fetch from "isomorphic-unfetch";
-import qs from 'qs';
 
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { spotifyProfileURL } from "../utils/constants";
-import { loginUser } from "../store/actions/userActions";
+import { loginUser, connectSpotifyToUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
 
 //bootstrap components
@@ -48,13 +47,12 @@ class Chat extends React.Component {
   
 
   render() {
-    const { user, spotify_token } = this.props;
     return (
       <Layout>
-        <Container className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto">
-          <Row>
-            <Col xs={12} md={4}>
-              <div className="py-3 border-bottom border-info d-flex align-items-center justify-content-between">
+        <div className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto d-flex flex-column">
+          <div className="d-flex flex-column flex-md-row flex-grow-1">
+            <div className="mx-3">
+              <div className="py-1 py-md-3 border-bottom border-info d-flex align-items-center justify-content-between">
                 <div>
                   Based on:
                   <Form>
@@ -75,8 +73,8 @@ class Chat extends React.Component {
                   ></ChatCard>
                 ))}
               </div>
-            </Col>
-            <Col xs={12} md={8} className="d-flex flex-column">
+            </div>
+            <div className="d-flex flex-column w-75 ml-auto mr-4">
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
               <Image
                 src="/static/pusheen.jpg"
@@ -88,14 +86,12 @@ class Chat extends React.Component {
                 </Button>
               </div>
               <ChatStream />
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={12} className="p-3">
-              <MusicController token={spotify_token} />
-            </Col>
-          </Row>
-        </Container>
+            </div>
+          </div>
+          <div className="m-4">
+              <MusicController />
+          </div>
+        </div>
       </Layout>
     );
   }

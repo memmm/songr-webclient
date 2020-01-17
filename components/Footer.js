@@ -4,7 +4,7 @@ import Link from "next/link";
 export default class Footer extends Component {
   render() {
     return (
-      <div className="w-100 d-flex justify-content-end p-3">
+      <div className="w-100 d-none d-md-flex justify-content-end p-3">
         <Link href="/disclaimer">
           <a>
             <p className="mr-3 mb-0 text-white">Disclaimer</p>

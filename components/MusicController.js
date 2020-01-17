@@ -2,6 +2,9 @@ import React from "react";
 import "./MusicController.scss";
 import cookies from "next-cookies";
 import axios from "axios";
+import cookie from "js-cookie";
+import Button from "react-bootstrap/Button";
+import { spotifyWebApiURL } from "../utils/constants";
 
 export default class MusicController extends React.Component {
   constructor(props) {
@@ -12,14 +15,15 @@ export default class MusicController extends React.Component {
   }
 
   componentDidMount = () => {
-    this.getCurrentlyPlaying();
+    if (cookie.get('spotify_token'))
+      this.getCurrentlyPlaying();
   };
 
   getCurrentlyPlaying(e) {
     axios
       .get(`https://api.spotify.com/v1/me/player/currently-playing`, {
         headers: {
-          Authorization: "Bearer " + this.props.token
+          Authorization: "Bearer " + cookie.get('spotify_token')
         }
       })
       .then(res => {
@@ -46,23 +50,40 @@ export default class MusicController extends React.Component {
     e.target.classList.toggle("pause");
   }
 
+  onClickloginWithSpotify = event => {
+    event.preventDefault();
+    //Could have: set state param in the redirect URI for security
+    document.location = spotifyWebApiURL;
+     
+  };
+
   //TODO: if there is no spoty token, show 'Connect to Spotify' button
   render() {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">
-        <p className="mb-0">
+        {!(cookie.get('spotify_token')) ? (
+        <Button
+                  className="mt-3 w-25 "
+                  variant="secondary"
+                  onClick={e => this.onClickloginWithSpotify(e)}
+                >
+                  Connect your Spotify
+                </Button>
+        ) : (
+        <p className="mb-0 w-50 overflow-hidden">
           {this.state.artist}
           {this.state.artist ? ": " : "Silence..."} <b>{this.state.song}</b>
-        </p>
-        <div className="ml-auto">
-          <div className="btn btn-prev">
+        </p>)
+  }
+        <div className="ml-auto d-flex flex-nowrap align-items-center">
+          <div className="button btn-prev">
             <div></div>
           </div>
-          <div className="btn btn-play" onClick={e => this.togglePlay(e)}>
+          <div className="button btn-play" onClick={e => this.togglePlay(e)}>
             <div></div>
           </div>
           <div
-            className="btn btn-next"
+            className="button btn-next"
             // onClick={e => this.getCurrentlyPlaying(e)}
           >
             <div></div>

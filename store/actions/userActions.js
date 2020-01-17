@@ -3,6 +3,7 @@ import { spotifyTokenURL, redirectURI, clientID, clientSecret } from "../../util
 import Router from "next/router";
 import cookie from "js-cookie";
 import axios from "axios";
+import qs from 'qs';
 
 export const loginUser = userData => {
   // axios
@@ -27,22 +28,22 @@ export const loginUser = userData => {
 };
 
 export const connectSpotifyToUser = spotify_code => {
-      const data = { 
+      let data = { 
         "grant_type": "authorization_code",
         "code": spotify_code,
         "redirect_uri": redirectURI,
         "client_id": clientID,
         "client_secret": clientSecret };
-      const options = {
-        method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        data: qs.stringify(data),
-        spotifyTokenURL,
-      };
-      axios(options)
+    
+        const headers = { 'content-type': 'application/x-www-form-urlencoded' };
+        data = qs.stringify(data);
+        
+      
+      axios.post(spotifyTokenURL, data, headers)
         .then((res) => {
-          console.log(res.data);
-          cookie.set("spotify_token", res.data, { expires: 1 })
+          console.log(res);
+          cookie.set("spotify_token", res.data.access_token, { expires: 1 })
+          cookie.set("spotify_refresh_token", res.data.refresh_token, { expires: 1 })
         })
         .catch(err => console.error(err));
 }
