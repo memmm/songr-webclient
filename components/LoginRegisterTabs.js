@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 import "./LoginRegisterTabs.scss";
-import { loginUser } from "../store/actions/userActions";
+import { loginUser, signupUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
 
 class LoginRegisterTabs extends React.Component {
@@ -13,7 +13,9 @@ class LoginRegisterTabs extends React.Component {
     this.state = {
       username: "",
       password: "",
-      email: ""
+      email: "",
+      message: "",
+      validated: false
     };
   }
 
@@ -23,56 +25,77 @@ class LoginRegisterTabs extends React.Component {
   };
 
 
-  onClicklogin(e) {
-    e.preventDefault();
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    this.props.loginUser(userData);
+  onClicklogin = e => {
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.setState({ validated: true});
+    } else {
+      const userData = {
+        email: this.state.email,
+        password: this.state.password
+      };
+      loginUser(userData);
+    }
   }
 
-  onClickRegister(e) {
-    e.preventDefault();
-    const userData = {
-      username: this.state.username,
-      email: this.state.email,
-      password: this.state.password
-    };
-    this.props.loginUser(userData);
+  onClickRegister = e => {
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      this.setState({ validated: true});
+    } else {
+      const userData = {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password
+      };
+      if (!signupUser(userData)) {
+        this.setState({ message: "Something went wrong, please try again!" });
+      }
+    }
   }
 
   render() {
     return (
       <Tabs defaultActiveKey="login">
         <Tab eventKey="login" title="Login">
-          <Form className="p-3">
+          <Form  noValidate validated={this.state.validated} onSubmit={this.onClicklogin} className="p-3">
             <Form.Group controlId="formLoginEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
+                required
                 type="email"
                 placeholder="Email"
                 value={this.state.email}
                 name="email"
                 onChange={e => this.handleChange(e)}
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid email address.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="formLoginPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                required
                 type="password"
                 placeholder="Password"
                 value={this.state.password}
                 name="password"
                 onChange={e => this.handleChange(e)}
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a password.
+              </Form.Control.Feedback>
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
               className="w-100"
-              onClick={e => this.onClicklogin(e)}
             >
               Login
             </Button>
@@ -80,16 +103,20 @@ class LoginRegisterTabs extends React.Component {
         </Tab>
 
         <Tab eventKey="register" title="Register">
-          <Form className="p-3">
+          <Form  noValidate validated={this.state.validated} onSubmit={this.onClickRegister} className="p-3">
             <Form.Group controlId="formSignupEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
+                required
                 type="email"
                 placeholder="Email"
                 name="email"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid email address.
+              </Form.Control.Feedback>
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -97,34 +124,42 @@ class LoginRegisterTabs extends React.Component {
             <Form.Group controlId="formSignupUsername">
               <Form.Label>Username</Form.Label>
               <Form.Control
+                required
                 type="text"
                 placeholder="Username"
                 name="username"
                 value={this.state.username}
                 onChange={this.handleChange}
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a valid username.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formSignupPassword">
               <Form.Label>Password</Form.Label>
               <Form.Control
+                required
                 type="password"
                 placeholder="Password"
                 name="password"
                 value={this.state.password}
                 onChange={this.handleChange}
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a password.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formAcceptCheckbox">
-              <Form.Check type="checkbox" label="I accept everything." />
+              <Form.Check required type="checkbox" label="I accept everything." />
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
               className="w-100"
-              onClick={e => this.onClickRegister(e)}
             >
               Register
             </Button>
+              <Form.Label>{this.state.message}</Form.Label>
           </Form>
         </Tab>
       </Tabs>
@@ -132,13 +167,6 @@ class LoginRegisterTabs extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  UI: state.UI
-});
 
-const mapActionsToProps = {
-  loginUser
-};
 
-export default connect(mapStateToProps, mapActionsToProps)(LoginRegisterTabs);
+export default LoginRegisterTabs;
