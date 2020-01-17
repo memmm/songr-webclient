@@ -1,20 +1,16 @@
 import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, SET_AUTHENTICATED } from "../types";
+import { spotifyTokenURL, redirectURI, clientID, clientSecret } from "../../utils/constants";
 import Router from "next/router";
-import nextCookie from "next-cookies";
 import cookie from "js-cookie";
 import axios from "axios";
 
-export const loginUser = userData => dispatch => {
-  // dispatch({ type: LOADING_UI });
+export const loginUser = userData => {
   // axios
   //   .post(`/signin`, userData)
   //   .then(res => {
   //     // const SongrToken = `Bearer ${res.data.token}`;
-  //     const SongrToken = `Bearer TEST`;
   //     cookie.set("auth_token", SongrToken, { expires: 1 });
   //     axios.defaults.headers.common["Authorization"] = SongrToken;
-  //     dispatch(getUserData());
-  //     dispatch({ type: CLEAR_ERRORS });
   //     Router.push("/chat");
   //   })
   //   .catch(err => {
@@ -24,51 +20,65 @@ export const loginUser = userData => dispatch => {
   //     });
   //   });
   //This dispatch is only for test:
-  dispatch({
-    type: SET_USER,
-    payload: { userName: "Teszt Elek", email: "tesztelek@kukac.nl" }
-  });
-  dispatch({
-    type: SET_AUTHENTICATED
-  });
+  const SongrToken = `Bearer TEST`; 
+  cookie.set("auth_token", SongrToken, { expires: 1 });
+  cookie.set("auth_user", {email: userData.email}, { expires: 1 });
   Router.push("/chat");
 };
 
-export const signupUser = (newUserData, history) => (dispatch) => {
-  dispatch({ type: LOADING_UI });
+export const connectSpotifyToUser = spotify_code => {
+      const data = { 
+        "grant_type": "authorization_code",
+        "code": spotify_code,
+        "redirect_uri": redirectURI,
+        "client_id": clientID,
+        "client_secret": clientSecret };
+      const options = {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: qs.stringify(data),
+        spotifyTokenURL,
+      };
+      axios(options)
+        .then((res) => {
+          console.log(res.data);
+          cookie.set("spotify_token", res.data, { expires: 1 })
+        })
+        .catch(err => console.error(err));
+}
+
+export const signupUser = (newUserData, history) => {
+  let isSuccess;
   axios
     .post('/signup', newUserData)
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
-      dispatch({ type: CLEAR_ERRORS });
-      history.push('/');
+      Router.push("/settings");
+      isSuccess = true;
     })
     .catch((err) => {
-      dispatch({
-        type: SET_ERRORS,
-        payload: err.response.data
-      });
+      console.error(err);
+      isSuccess = false;
     });
+    return isSuccess;
 };
 
-export const logoutUser = () => (dispatch) => {
+export const logoutUser = () => {
   cookie.remove("spotify_token");
   cookie.remove("auth_token");
+  cookie.remove("auth_user");
   // to support logging out from all windows
   cookie.set("logout", Date.now());
   delete axios.defaults.headers.common['Authorization'];
-  dispatch({ type: SET_UNAUTHENTICATED });
+  Router.push("/");
 };
 
 export const getUserData = () => dispatch => {
   axios
     .get("/user")
     .then(res => {
-      dispatch({
-        type: SET_USER,
-        payload: res.data
-      });
+      cookie.set("auth_user", res.data);
     })
     .catch(err => console.log(err));
 };

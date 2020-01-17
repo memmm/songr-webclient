@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import "./Layout.scss";
 import nextCookie from "next-cookies";
+import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
 import { logoutUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
@@ -15,19 +16,19 @@ class Header extends React.Component {
       <nav className="header">
         <ul>
           <li>
-            <Link href={this.props.user.authenticated ? "/chat" : "/"}>
+            <Link href={cookie.get('auth_token') ? "/chat" : "/"}>
               <a>
                 <h1 className="title">SongR</h1>
               </a>
             </Link>
           </li>
-          {this.props.user.authenticated && (
+          {cookie.get('auth_token') && (
             <li className="loggedin-panel">
               <Link href="settings">
                 <a className="settings-link mr-3">Settings</a>
               </Link>
 
-              <a onClick={e => this.props.logoutUser()} className="logout-btn">
+              <a onClick={e => logoutUser()} className="logout-btn">
                 Logout
               </a>
             </li>
@@ -65,13 +66,4 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user,
-  UI: state.UI
-});
-
-const mapActionsToProps = {
-  logoutUser
-};
-
-export default connect(mapStateToProps, mapActionsToProps)(Header);
+export default Header;

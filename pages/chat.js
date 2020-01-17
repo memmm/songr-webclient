@@ -9,7 +9,7 @@ import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import { spotifyProfileURL, spotifyTokenURL } from "../utils/constants";
+import { spotifyProfileURL } from "../utils/constants";
 import { loginUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
 
@@ -35,22 +35,14 @@ class Chat extends React.Component {
   }
 
   componentDidMount = () => {
+    console.log("Chat component mounted");
     let url = window.location.href;
     if (url.indexOf("code") > -1) {
       let spotify_code = url
         .split("code=")[1]
         .split("&")[0]
         .trim();
-  
-      console.log(spotify_code);
-      const data = { 'bar': 123 };
-      const options = {
-        method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        data: qs.stringify(data),
-        url,
-      };
-      axios(spotifyTokenURL);
+      connectSpotifyToUser(spotify_code); 
     }
   };
   
@@ -150,8 +142,7 @@ Chat.getInitialProps = async function(context) {
 };
 
 const mapStateToProps = state => ({
-  user: state.user,
-  UI: state.UI
+  user: state.user
 });
 
 const mapActionsToProps = {
