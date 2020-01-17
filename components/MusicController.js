@@ -45,6 +45,8 @@ export default class MusicController extends React.Component {
   togglePlay(e) {
     e.target.classList.toggle("pause");
   }
+
+  //TODO: if there is no spoty token, show 'Connect to Spotify' button
   render() {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">

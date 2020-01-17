@@ -43,7 +43,9 @@ export default class Settings extends React.Component {
   }
   onClickloginWithSpotify = event => {
     event.preventDefault();
+    //Could have: set state param in the redirect URI for security
     document.location = spotifyWebApiURL;
+     
   };
   render() {
     return (

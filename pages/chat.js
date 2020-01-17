@@ -3,12 +3,13 @@ import Link from "next/link";
 import axios from "axios";
 import nextCookie from "next-cookies";
 import fetch from "isomorphic-unfetch";
+import qs from 'qs';
 
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import { spotifyProfileURL } from "../utils/constants";
+import { spotifyProfileURL, spotifyTokenURL } from "../utils/constants";
 import { loginUser } from "../store/actions/userActions";
 import { connect } from "react-redux";
 
@@ -32,6 +33,27 @@ class Chat extends React.Component {
       currentChatPartner: null
     };
   }
+
+  componentDidMount = () => {
+    let url = window.location.href;
+    if (url.indexOf("code") > -1) {
+      let spotify_code = url
+        .split("code=")[1]
+        .split("&")[0]
+        .trim();
+  
+      console.log(spotify_code);
+      const data = { 'bar': 123 };
+      const options = {
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: qs.stringify(data),
+        url,
+      };
+      axios(spotifyTokenURL);
+    }
+  };
+  
 
   render() {
     const { user, spotify_token } = this.props;
@@ -113,14 +135,18 @@ class Chat extends React.Component {
   leaveChat() {}
 }
 
+
+
 Chat.getInitialProps = async function(context) {
   const { spotify_token } = nextCookie(context);
-  const res = await fetch(spotifyProfileURL + spotify_token);
-  const user = await res.json();
-  return {
-    spotify_token,
-    user
-  };
+  if (spotify_token != undefined){
+    const res = await fetch(spotifyProfileURL + spotify_token);
+    const user = await res.json();
+    return {
+      spotify_token,
+      user
+    };
+  }
 };
 
 const mapStateToProps = state => ({
