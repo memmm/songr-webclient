@@ -31,8 +31,10 @@
                 border-width: .8rem 0 .8rem 1.5rem;
                 margin-left: 0.3rem;
 
-                // paused state
-                &.pause {
+            }
+            // paused state
+            &.pause {
+                div {
                     border-style: double;
                     border-width: 0px 0 0px 1.5rem;
                     margin-left: 0;

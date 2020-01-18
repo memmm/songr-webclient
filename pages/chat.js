@@ -4,14 +4,15 @@ import axios from "axios";
 import nextCookie from "next-cookies";
 import fetch from "isomorphic-unfetch";
 import cookie from "js-cookie";
+import { connect } from "react-redux";
 
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { spotifyProfileURL } from "../utils/constants";
-import { loginUser, connectSpotifyToUser } from "../store/actions/userActions";
-import { connect } from "react-redux";
+import { loginUser, connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
+
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -44,6 +45,9 @@ class Chat extends React.Component {
         .trim();
       connectSpotifyToUser(spotify_code); 
     }
+    if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
+      refreshSpotifyToken();
+    }
   };
   
 
@@ -52,7 +56,7 @@ class Chat extends React.Component {
       <Layout>
         <div className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto d-flex flex-column">
           <div className="d-flex flex-column flex-md-row flex-grow-1">
-            <div className="mx-3">
+            <div className="mx-3 flex-md-grow-0">
               <div className="py-1 py-md-3 border-bottom border-info d-flex align-items-center justify-content-between">
                 <div>
                   Based on:
@@ -75,7 +79,7 @@ class Chat extends React.Component {
                 ))}
               </div>
             </div>
-            <div className="d-flex flex-column w-75 ml-auto mr-4">
+            <div className="d-flex flex-column flex-md-grow-1 ml-auto mr-4">
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
               <Image
                 src="/static/pusheen.jpg"

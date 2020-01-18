@@ -2,6 +2,8 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Router from "next/router";
+import cookie from "js-cookie";
 
 import "./LoginRegisterTabs.scss";
 import { loginUser, signupUser } from "../store/actions/userActions";
@@ -17,6 +19,12 @@ class LoginRegisterTabs extends React.Component {
       message: "",
       validated: false
     };
+  }
+
+  componentDidMount = () => {
+    if(cookie.get("auth_token")) {
+      Router.push("/chat");
+    }
   }
 
   handleChange = event => {

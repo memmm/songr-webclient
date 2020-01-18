@@ -12,7 +12,7 @@ export const spotifyTokenURL = `https://accounts.spotify.com/api/token`
 export const spotifyProfileURL = "https://api.spotify.com/v1/me?access_token=";
 export const spotifyCurrentlyPlayingURL =
   "https://api.spotify.com/v1/me/player?access_token=";
-export const spotifyPause = "https://api.spotify.com/v1/me/player/pause";
+export const spotifyPlayer = "https://api.spotify.com/v1/me/player/";
 export const spotifyPlaylistURL =
   "https://api.spotify.com/v1/me/playlists?access_token=";
 export const spotifySearchURL = "https://api.spotify.com/v1/search?q=";

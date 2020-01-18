@@ -4,7 +4,7 @@ import cookies from "next-cookies";
 import axios from "axios";
 import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
-import { spotifyWebApiURL, spotifyPause } from "../utils/constants";
+import { spotifyWebApiURL, spotifyPlayer } from "../utils/constants";
 
 export default class MusicController extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class MusicController extends React.Component {
 
   getCurrentlyPlaying(e) {
     axios
-      .get(`https://api.spotify.com/v1/me/player/currently-playing`, {
+      .get(`${spotifyPlayer}currently-playing`, {
         headers: {
           Authorization: "Bearer " + cookie.get('spotify_token')
         }
@@ -39,6 +39,7 @@ export default class MusicController extends React.Component {
           () => this.getCurrentlyPlaying(),
           this.state.ms_left
         );
+        document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
       });
   }
 
@@ -47,8 +48,34 @@ export default class MusicController extends React.Component {
   };
 
   togglePlay(e) {
-    e.target.classList.toggle("pause");
-    axios.put(spotifyPause, {
+    document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
+    if (!document.getElementsByClassName("btn-play")[0].classList.contains("pause")) {
+      axios.put(spotifyPlayer + "pause", {}, {
+        headers: {
+          Authorization: "Bearer " + cookie.get('spotify_token')
+        }
+      });
+    } else {
+      axios.put(spotifyPlayer + "play", {}, {
+        headers: {
+          Authorization: "Bearer " + cookie.get('spotify_token')
+        }
+      });
+    }
+  }
+
+  getNextSong(e) {
+    e.preventDefault();
+    axios.post(spotifyPlayer + "next", {}, {
+      headers: {
+        Authorization: "Bearer " + cookie.get('spotify_token')
+      }
+    });
+  }
+
+  getPreviousSong(e){
+    e.preventDefault();
+    axios.post(spotifyPlayer + "previous", {}, {
       headers: {
         Authorization: "Bearer " + cookie.get('spotify_token')
       }
@@ -81,15 +108,14 @@ export default class MusicController extends React.Component {
         </p>)
   }
         <div className="ml-auto d-flex flex-nowrap align-items-center">
-          <div className="button btn-prev">
+          <div className="button btn-prev" onClick={e => this.getPreviousSong(e)}>
             <div></div>
           </div>
           <div className="button btn-play" onClick={e => this.togglePlay(e)}>
             <div></div>
           </div>
           <div
-            className="button btn-next"
-            // onClick={e => this.getCurrentlyPlaying(e)}
+            className="button btn-next" onClick={e => this.getNextSong(e)}
           >
             <div></div>
           </div>
