@@ -2,6 +2,9 @@ import React from "react";
 import "./MusicController.scss";
 import cookies from "next-cookies";
 import axios from "axios";
+import cookie from "js-cookie";
+import Button from "react-bootstrap/Button";
+import { spotifyWebApiURL, spotifyPause } from "../utils/constants";
 
 export default class MusicController extends React.Component {
   constructor(props) {
@@ -12,14 +15,15 @@ export default class MusicController extends React.Component {
   }
 
   componentDidMount = () => {
-    this.getCurrentlyPlaying();
+    if (cookie.get('spotify_token'))
+      this.getCurrentlyPlaying();
   };
 
   getCurrentlyPlaying(e) {
     axios
       .get(`https://api.spotify.com/v1/me/player/currently-playing`, {
         headers: {
-          Authorization: "Bearer " + this.props.token
+          Authorization: "Bearer " + cookie.get('spotify_token')
         }
       })
       .then(res => {
@@ -28,7 +32,7 @@ export default class MusicController extends React.Component {
           song: res.data.item ? res.data.item.name : "",
           is_playing: res.data.is_playing,
           ms_left: res.data.item
-            ? res.data.item.duration_ms - res.data.progress_ms
+            ? res.data.item.duration_ms - res.data.progress_ms + 1
             : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
         this.timeoutFetchCurrent = setTimeout(
@@ -44,23 +48,47 @@ export default class MusicController extends React.Component {
 
   togglePlay(e) {
     e.target.classList.toggle("pause");
+    axios.put(spotifyPause, {
+      headers: {
+        Authorization: "Bearer " + cookie.get('spotify_token')
+      }
+    });
   }
+
+  onClickloginWithSpotify = event => {
+    event.preventDefault();
+    //Could have: set state param in the redirect URI for security
+    document.location = spotifyWebApiURL;
+     
+  };
+
+  //TODO: if there is no spoty token, show 'Connect to Spotify' button
   render() {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">
-        <p className="mb-0">
+        {!(cookie.get('spotify_token')) ? (
+        <Button
+                  className="mt-3 w-25 "
+                  variant="secondary"
+                  onClick={e => this.onClickloginWithSpotify(e)}
+                >
+                  Connect your Spotify
+                </Button>
+        ) : (
+        <p className="mb-0 w-50 overflow-hidden">
           {this.state.artist}
           {this.state.artist ? ": " : "Silence..."} <b>{this.state.song}</b>
-        </p>
-        <div className="ml-auto">
-          <div className="btn btn-prev">
+        </p>)
+  }
+        <div className="ml-auto d-flex flex-nowrap align-items-center">
+          <div className="button btn-prev">
             <div></div>
           </div>
-          <div className="btn btn-play" onClick={e => this.togglePlay(e)}>
+          <div className="button btn-play" onClick={e => this.togglePlay(e)}>
             <div></div>
           </div>
           <div
-            className="btn btn-next"
+            className="button btn-next"
             // onClick={e => this.getCurrentlyPlaying(e)}
           >
             <div></div>

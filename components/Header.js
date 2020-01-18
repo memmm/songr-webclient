@@ -1,29 +1,34 @@
 import React from "react";
 import Link from "next/link";
 import "./Layout.scss";
-import { logout } from "../utils/auth";
 import nextCookie from "next-cookies";
+import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
+import { logoutUser } from "../store/actions/userActions";
+import { connect } from "react-redux";
 
-export default class Header extends React.Component {
+class Header extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <nav className="header">
         <ul>
           <li>
-            <Link href={nextCookie(this.context).spotify_token ? "/chat" : "/"}>
+            <Link href={cookie.get('auth_token') ? "/chat" : "/"}>
               <a>
                 <h1 className="title">SongR</h1>
               </a>
             </Link>
           </li>
-          {nextCookie(this.context).spotify_token && (
+          {cookie.get('auth_token') && (
             <li className="loggedin-panel">
               <Link href="settings">
                 <a className="settings-link mr-3">Settings</a>
               </Link>
 
-              <a onClick={logout} className="logout-btn">
+              <a onClick={e => logoutUser()} className="logout-btn">
                 Logout
               </a>
             </li>
@@ -60,3 +65,5 @@ export default class Header extends React.Component {
     );
   }
 }
+
+export default Header;

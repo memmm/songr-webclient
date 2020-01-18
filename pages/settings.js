@@ -2,6 +2,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import ListItems from "../components/ListItems";
 import axios from "axios";
+import { spotifyWebApiURL } from "../utils/constants";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -42,7 +43,9 @@ export default class Settings extends React.Component {
   }
   onClickloginWithSpotify = event => {
     event.preventDefault();
+    //Could have: set state param in the redirect URI for security
     document.location = spotifyWebApiURL;
+     
   };
   render() {
     return (

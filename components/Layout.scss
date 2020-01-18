@@ -119,7 +119,11 @@ h5 {
 .chat-container {
     background: $secondary;
     box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);
-    height: 36rem;
+    width: 100%;
+    @media screen and (min-width: 768px) {
+        height: 70vh;
+        width: 90%;
+    }
 
     .partner-thumbnail {
         height: 2.5rem;
