@@ -32,7 +32,7 @@ export default class MusicController extends React.Component {
           song: res.data.item ? res.data.item.name : "",
           is_playing: res.data.is_playing,
           ms_left: res.data.item
-            ? res.data.item.duration_ms - res.data.progress_ms
+            ? res.data.item.duration_ms - res.data.progress_ms + 1
             : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
         this.timeoutFetchCurrent = setTimeout(
@@ -48,7 +48,11 @@ export default class MusicController extends React.Component {
 
   togglePlay(e) {
     e.target.classList.toggle("pause");
-    axios.put(spotifyPause, {"Authorization": `Bearer ${cookie.get('spotify_token')}`});
+    axios.put(spotifyPause, {
+      headers: {
+        Authorization: "Bearer " + cookie.get('spotify_token')
+      }
+    });
   }
 
   onClickloginWithSpotify = event => {

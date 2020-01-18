@@ -3,6 +3,7 @@ import Link from "next/link";
 import axios from "axios";
 import nextCookie from "next-cookies";
 import fetch from "isomorphic-unfetch";
+import cookie from "js-cookie";
 
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
@@ -36,7 +37,7 @@ class Chat extends React.Component {
   componentDidMount = () => {
     console.log("Chat component mounted");
     let url = window.location.href;
-    if (url.indexOf("code") > -1) {
+    if (url.indexOf("code") > -1 && !cookie.get("spotify_token")) {
       let spotify_code = url
         .split("code=")[1]
         .split("&")[0]
