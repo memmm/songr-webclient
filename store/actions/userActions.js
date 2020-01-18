@@ -38,12 +38,28 @@ export const connectSpotifyToUser = spotify_code => {
         const headers = { 'content-type': 'application/x-www-form-urlencoded' };
         data = qs.stringify(data);
         
-      
+      let inOneHour = new Date(new Date().getTime() + 60 * 60 * 1000);
       axios.post(spotifyTokenURL, data, headers)
         .then((res) => {
           console.log(res);
-          cookie.set("spotify_token", res.data.access_token, { expires: 1 })
-          cookie.set("spotify_refresh_token", res.data.refresh_token, { expires: 1 })
+          cookie.set("spotify_token", res.data.access_token, { expires: inOneHour })
+          cookie.set("spotify_refresh_token", res.data.refresh_token, { expires: 365 })
+          setTimeout(function() {
+            refreshSpotifyToken();
+          }, inOneHour)
+        })
+        .catch(err => console.error(err));
+}
+
+export const refreshSpotifyToken = () => {
+
+    const headers = { 'content-type': 'application/x-www-form-urlencoded' };
+    let data = qs.stringify({ "grant_type": "refresh_token",  "refresh_token": cookie.get("spotify_refresh_token")  });
+    let inOneHour = new Date(new Date().getTime() + 60 * 60 * 1000);
+    axios.post(spotifyTokenURL, data, headers)
+        .then((res) => {
+          console.log(res);
+          cookie.set("spotify_token", res.data.access_token, { expires: inOneHour })
         })
         .catch(err => console.error(err));
 }

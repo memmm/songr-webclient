@@ -4,7 +4,7 @@ import cookies from "next-cookies";
 import axios from "axios";
 import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
-import { spotifyWebApiURL } from "../utils/constants";
+import { spotifyWebApiURL, spotifyPause } from "../utils/constants";
 
 export default class MusicController extends React.Component {
   constructor(props) {
@@ -48,6 +48,7 @@ export default class MusicController extends React.Component {
 
   togglePlay(e) {
     e.target.classList.toggle("pause");
+    axios.put(spotifyPause, {"Authorization": `Bearer ${cookie.get('spotify_token')}`});
   }
 
   onClickloginWithSpotify = event => {
