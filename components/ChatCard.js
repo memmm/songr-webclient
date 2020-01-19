@@ -4,7 +4,7 @@ import Image from "react-bootstrap/Image";
 export default function ChatCard(props) {
   return (
     <a
-      className="chat-card d-flex align-items-center py-2"
+      className="chat-card d-flex align-items-center py-2 pr-4"
       onClick={props.onClick}
     >
       <div>

@@ -1,8 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import axios from "axios";
-import nextCookie from "next-cookies";
-import fetch from "isomorphic-unfetch";
 import cookie from "js-cookie";
 import { connect } from "react-redux";
 
@@ -10,8 +8,8 @@ import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import { spotifyProfileURL } from "../utils/constants";
-import { loginUser, connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
+import { spotifyProfileURL, songrService } from "../utils/constants";
+import { connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
 
 
 //bootstrap components
@@ -31,12 +29,12 @@ class Chat extends React.Component {
         { name: "Arthur Dent" },
         { name: "Marvin" }
       ],
-      currentChatPartner: null
+      currentChatPartner: null,
+      selectedQueue: "spotify"
     };
   }
 
   componentDidMount = () => {
-    console.log("Chat component mounted");
     let url = window.location.href;
     if (url.indexOf("code") > -1 && !cookie.get("spotify_token")) {
       let spotify_code = url
@@ -48,8 +46,40 @@ class Chat extends React.Component {
     if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
       refreshSpotifyToken();
     }
+
+    
   };
   
+  handleOptionChange = changeEvent => {
+    this.setState({
+      selectedQueue: changeEvent.target.value
+    });
+  };
+
+  //Join Queue
+  newChat = e => {
+    e.preventDefault();
+    if (this.state.selectedQueue === "spotify")
+      this.joinSpotifyQueue();
+    else this.joinPreferenceQueue();
+
+  }
+
+  joinPreferenceQueue = () => {
+    //Mock data, needs to be active user's data
+    let c = JSON.parse(cookie.get("auth_user"));
+    var url = `${songrService}joinpreferencequeue/${c.email}`;
+    //axios.post(url);
+  }
+
+  joinSpotifyQueue = () => {
+    let c = JSON.parse(cookie.get("auth_user"));
+    axios.post(`${songrService}/joinspotifyqueue/${email}`);
+  }
+
+  leaveChat() {
+    //TODO: empty current chat window, delete user from list
+  }
 
   render() {
     return (
@@ -57,18 +87,28 @@ class Chat extends React.Component {
         <div className="chat-container flex-grow-1 flex-md-grow-0 m-md-auto d-flex flex-column">
           <div className="d-flex flex-column flex-md-row flex-grow-1">
             <div className="mx-3 flex-md-grow-0">
-              <div className="py-1 py-md-3 border-bottom border-info d-flex align-items-center justify-content-between">
-                <div>
-                  Based on:
-                  <Form>
-                    <Form.Check type="radio" label={`Preferences`} />
-                    <Form.Check type="radio" label={`Spotify`} />
-                  </Form>
+              <Form onSubmit={this.newChat} className="py-1 py-md-3 border-bottom border-info d-flex align-items-center justify-content-between">
+                <div className="">
+                  <p className="d-block mb-1 font-weight-bold">Based on:</p>
+                  <div>
+                    <input type="radio"
+                                value="preferences" 
+                                name="queue-option"
+                                checked={this.state.selectedQueue === "preferences"}
+                                onChange={e => this.handleOptionChange(e)}/> Preferences
+                  </div>
+                  <div>
+                    <input type="radio" 
+                                value="spotify" 
+                                name="queue-option"
+                                checked={this.state.selectedQueue === "spotify"}
+                                onChange={e => this.handleOptionChange(e)}/> Spotify
+                  </div>
                 </div>
                 <div>
-                  <Button onClick={this.newChat()}>NEW CHAT</Button>
+                  <Button type="submit">NEW CHAT</Button>
                 </div>
-              </div>
+              </Form>
               <div className="d-flex d-md-block my-2 my-md-0">
                 {this.state.matches.map((x, i) => (
                   <ChatCard
@@ -100,54 +140,7 @@ class Chat extends React.Component {
       </Layout>
     );
   }
-
-  //Event handling:
-
-  //Join Queue
-  newChat() {
-    //To-do: Differentiate between radiobuttons
-    this.joinPreferenceQueue();
-  }
-  //Join Preference Queue
-  joinPreferenceQueue() {
-    //Mock data, needs to be active user's data
-    var userId = "1";
-    var userName = "Temp";
-    var token = "x";
-
-    var url = "localhost:9090/joinpreferencequeue/" + userId + "/" + userName; // +"/"+token;
-    axios.post(url);
-  }
-
-  //Join Spotify Queue
-  joinSpotifyQueue() {
-    axios.post("localhost:9090/joinspotifyqueue");
-  }
-
-  //Leave Chat
-  leaveChat() {}
+  
 }
-
-
-
-Chat.getInitialProps = async function(context) {
-  const { spotify_token } = nextCookie(context);
-  if (spotify_token != undefined){
-    const res = await fetch(spotifyProfileURL + spotify_token);
-    const user = await res.json();
-    return {
-      spotify_token,
-      user
-    };
-  }
-};
-
-const mapStateToProps = state => ({
-  user: state.user
-});
-
-const mapActionsToProps = {
-  loginUser
-};
 
 export default connect()(Chat);

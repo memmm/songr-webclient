@@ -26,7 +26,7 @@ If you want syntax highlighting for the CSS, install VSCode plugin 'vscode-style
 
 ## Data store
 
-We use Redux with Redux Toolkit for internal data sotrage.
+We use Redux for internal data sotrage. Only the actions, and not the reducers, because they can't persist state, so when the user is redirected for Spotify integration and back to SongR, the auth data would be lost. So the auth data (name, email, tokens) are persisted in cookies.
 
 ## Spotify Integration
 

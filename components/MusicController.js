@@ -32,7 +32,7 @@ export default class MusicController extends React.Component {
           song: res.data.item ? res.data.item.name : "",
           is_playing: res.data.is_playing,
           ms_left: res.data.item
-            ? res.data.item.duration_ms - res.data.progress_ms + 1
+            ? ((res.data.item.duration_ms - res.data.progress_ms) > 1000 * 30 ? 1000 * 30 : (res.data.item.duration_ms - res.data.progress_ms - 3))
             : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
         this.timeoutFetchCurrent = setTimeout(

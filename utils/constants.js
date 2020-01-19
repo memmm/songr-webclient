@@ -18,3 +18,5 @@ export const spotifyPlaylistURL =
 export const spotifySearchURL = "https://api.spotify.com/v1/search?q=";
 export const spotifyArtistURL = "https://api.spotify.com/v1/artists/";
 export const spotifyAlbumURL = "https://api.spotify.com/v1/albums/";
+
+export const songrService = "http://localhost:9090/";
