@@ -8,8 +8,8 @@ import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import { spotifyProfileURL, songrService } from "../utils/constants";
 import { connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
+import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/dataActions";
 
 
 //bootstrap components
@@ -60,22 +60,12 @@ class Chat extends React.Component {
   newChat = e => {
     e.preventDefault();
     if (this.state.selectedQueue === "spotify")
-      this.joinSpotifyQueue();
-    else this.joinPreferenceQueue();
+      getSpotifyMatch();
+    else getPreferenceMatch();
 
   }
 
-  joinPreferenceQueue = () => {
-    //Mock data, needs to be active user's data
-    let c = JSON.parse(cookie.get("auth_user"));
-    var url = `${songrService}joinpreferencequeue/${c.email}`;
-    //axios.post(url);
-  }
 
-  joinSpotifyQueue = () => {
-    let c = JSON.parse(cookie.get("auth_user"));
-    axios.post(`${songrService}/joinspotifyqueue/${email}`);
-  }
 
   leaveChat() {
     //TODO: empty current chat window, delete user from list
