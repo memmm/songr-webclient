@@ -3,7 +3,7 @@ import Image from "react-bootstrap/Image";
 
 export default function ChatCard(props) {
   return (
-    <a
+    <a  key={props.match.messages.slice(-1)[0]}
       className="chat-card d-flex align-items-center py-2 pr-4"
       onClick={props.onClick}
     >
@@ -15,8 +15,8 @@ export default function ChatCard(props) {
       </div>
       <div className="d-none d-md-block">
         <h4>{props.match.name}</h4>
-        <p className="mb-0">Last message chunk</p>
-        <p className="mb-0">Reason you connected</p>
+        <p className="mb-0"> { props.match.messages.slice(-1)[0] } </p>
+        {/* <p className="mb-0">Reason you connected</p> */}
       </div>
     </a>
   );

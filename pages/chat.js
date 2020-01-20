@@ -25,11 +25,11 @@ class Chat extends React.Component {
     super(props);
     this.state = {
       matches: [
-        { name: "Zaphod Beeblebrox" },
-        { name: "Arthur Dent" },
-        { name: "Marvin" }
+        { name: "Zaphod Beeblebrox", messages: ["hello", "nah"]},
+        { name: "Arthur Dent", messages: ["hogy bassza oket telibe", "ezeket a jo elet"] },
+        { name: "Marvin", messages: ["csak tulelem", "valahogy"] }
       ],
-      currentChatPartner: null,
+      currentChatPartner: { name: "", messages: []},
       selectedQueue: "spotify"
     };
   }
@@ -44,7 +44,7 @@ class Chat extends React.Component {
       connectSpotifyToUser(spotify_code); 
     }
     if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
-      refreshSpotifyToken();
+      //refreshSpotifyToken();
     }
 
     
@@ -120,7 +120,7 @@ class Chat extends React.Component {
                   Leave chat
                 </Button>
               </div>
-              <ChatStream />
+              <ChatStream chatPartner= {this.state.currentChatPartner} />
             </div>
           </div>
           <div className="m-4">

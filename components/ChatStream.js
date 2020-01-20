@@ -5,41 +5,44 @@ import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
 import Message from "./Message";
 
-export default function ChatStream() {
-  const initialMessage = [
-    "Say hi to your new match or skip the conversation with the button above."
-  ];
-  const [value, setValue] = React.useState("");
-  const [messages, setList] = React.useState(initialMessage);
-
-  function handleChange(e) {
-    setValue(e.target.value);
+export default class ChatStream extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chatPartner: { 
+        id: 1,
+        username: "Zaphod Beeblebrox",
+      },
+      message: "Say hi to your new match or skip the conversation with the button above.",
+      messages: []
+    };
   }
 
-  function submitOnEnter(e) {
+  componentDidMount = () => {
+    //localStorage
+  }
+
+  handleChange = e => {
+    this.setState({ message: e.target.value });
+  }
+
+  submitOnEnter = e => {
     if (e.keyCode === 13) {
-      sendMessage(e);
+      this.sendMessage();
     }
   }
 
-  function sendMessage(e) {
-    if (value) setList(messages.concat(value));
-
-    //temp user data
-    let requestBody = {
-        userId: "1",
-        userName: "temp",
-        message: value
+  sendMessage = () => {
+    if (this.state.message) {
+      this.props.chatPartner.messages = this.props.chatPartner.messages.concat(this.state.message);
     }
-
-    //var response = axios.post("http://localhost:9090/sendmessage", requestBody);
-
-    setValue("");
+    this.setState({ message: "" });
   }
+  render() {
   return (
     <div className="chat-stream flex-grow-1 p-md-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-end">
       <div className="overflow-auto">
-        {messages.map((x, i) => (
+        {this.props.chatPartner.messages.map((x, i) => (
           <Message key={i} message={x}></Message>
         ))}
       </div>
@@ -47,16 +50,16 @@ export default function ChatStream() {
         <FormControl
           placeholder="Message"
           aria-label="Message"
-          onChange={handleChange}
+          onChange={e => this.handleChange(e)}
           className="chat-input-field"
           tabIndex="-1"
-          onKeyUp={submitOnEnter}
+          onKeyUp={e => this.submitOnEnter(e)}
           autoFocus
         />
         <InputGroup.Append>
           <Button
             variant="outline-secondary"
-            onClick={sendMessage}
+            onClick={this.sendMessage}
             tabIndex="0"
           >
             SEND
@@ -65,4 +68,5 @@ export default function ChatStream() {
       </InputGroup>
     </div>
   );
+  }
 }
