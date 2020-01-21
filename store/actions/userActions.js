@@ -7,7 +7,7 @@ import qs from 'qs';
 
 export const loginUser = userData => {
   axios
-    .post(`${songrService}auth/signin`, userData)
+    .post(`${songrService}auth/signin`, null, {params: userData})
     .then(res => {
       //const SongrToken = `Bearer ${res.data}`;
       const SongrToken = `Bearer TEST`;
@@ -47,7 +47,7 @@ export const connectSpotifyToUser = spotify_code => {
           cookie.set("spotify_token", res.data.access_token, { expires: inOneHour })
           cookie.set("spotify_refresh_token", res.data.refresh_token, { expires: 365 })
           let token = cookie.get("auth_token");
-          axios.post(`${songrService}user/${token}/connect-spotify`, {spotify_refresh_token: res.data.refresh_token});
+          axios.post(`${songrService}user/${token}/connect-spotify`, null, {params: {spotify_refresh_token: res.data.refresh_token}});
           setTimeout(function() {
             refreshSpotifyToken();
           }, inOneHour)
@@ -57,10 +57,17 @@ export const connectSpotifyToUser = spotify_code => {
 
 export const refreshSpotifyToken = () => {
 
-    const headers = { 'content-type': 'application/x-www-form-urlencoded' };
-    let data = qs.stringify({ "grant_type": "refresh_token",  "refresh_token": cookie.get("spotify_refresh_token")  });
+    const headers = { 
+      'content-type': 'application/x-www-form-urlencoded',
+      'Authorization': "Basic M2NmZDRlMDhiNDdhNGZmMGEzZjZkOWUwNTU3ODUyMzc6ZDFiN2E1ZTJlZWVmNGI3ODhjZmY2M2JjOWUzZmIxZTE="
+   };
+    let data = { 
+      grant_type: "refresh_token",  
+      refresh_token: cookie.get("spotify_refresh_token"), 
+      redirect_uri: redirectURI 
+    };
     let inOneHour = new Date(new Date().getTime() + 60 * 60 * 1000);
-    axios.post(spotifyTokenURL, data, headers)
+    axios.post(spotifyTokenURL, null, {headers, params: data})
         .then((res) => {
           console.log(res);
           cookie.set("spotify_token", res.data.access_token, { expires: inOneHour })
@@ -71,7 +78,7 @@ export const refreshSpotifyToken = () => {
 export const signupUser = (newUserData, history) => {
   let isSuccess;
   axios
-    .post(`${songrService}auth/signup`, newUserData)
+    .post(`${songrService}auth/signup`, null, {params: newUserData})
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
@@ -86,16 +93,19 @@ export const signupUser = (newUserData, history) => {
 };
 
 export const logoutUser = () => {
+  let token = cookie.get("auth_token");
+  axios
+  .post(`${songrService}auth/signout`, null, {params: {token: token}})
   cookie.remove("spotify_token");
   cookie.remove("auth_token");
   cookie.remove("auth_user");
   // to support logging out from all windows
   cookie.set("logout", Date.now());
   delete axios.defaults.headers.common['Authorization'];
-  
+  Router.push('/');
 };
 
-export const getUserData = () => dispatch => {
+export const getUserData = () => {
   axios
     .get("/user")
     .then(res => {
@@ -107,7 +117,7 @@ export const getUserData = () => dispatch => {
 export const updateUserInfo = (formData) => {
   let token = cookie.get("auth_token");
   axios
-    .post(`${songrService}user/${token}/set-user`, formData)
+    .post(`${songrService}user/${token}/set-user`, null, { params: formData })
     .then(() => {
       //get user data to see changes
       dispatch(getUserData());

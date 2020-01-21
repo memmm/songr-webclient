@@ -9,7 +9,7 @@ import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { connectSpotifyToUser, refreshSpotifyToken, logoutUser } from "../store/actions/userActions";
-import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/dataActions";
+import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/chatActions";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -47,8 +47,7 @@ class Chat extends React.Component {
       connectSpotifyToUser(spotify_code); 
     }
     if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
-      //TODO fix refresh token request
-      //refreshSpotifyToken();
+      refreshSpotifyToken();
     }
 
     let chats = localStorage.getItem('chats');
