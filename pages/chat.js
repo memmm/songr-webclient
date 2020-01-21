@@ -11,7 +11,6 @@ import ChatStream from "../components/ChatStream";
 import { connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
 import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/dataActions";
 
-
 //bootstrap components
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -27,7 +26,7 @@ class Chat extends React.Component {
       matches: [
         { name: "Zaphod Beeblebrox", messages: ["hello", "nah"]},
         { name: "Arthur Dent", messages: ["hogy bassza oket telibe", "ezeket a jo elet"] },
-        { name: "Marvin", messages: ["csak tulelem", "valahogy"] }
+        { name: "Marvin", messages: [] }
       ],
       currentChatPartner: { name: "", messages: []},
       selectedQueue: "spotify"
