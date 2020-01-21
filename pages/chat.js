@@ -8,7 +8,7 @@ import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
-import { connectSpotifyToUser, refreshSpotifyToken } from "../store/actions/userActions";
+import { connectSpotifyToUser, refreshSpotifyToken, logoutUser } from "../store/actions/userActions";
 import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/dataActions";
 
 //bootstrap components
@@ -21,17 +21,21 @@ import Image from "react-bootstrap/Image";
 
 class Chat extends React.Component {
   constructor(props) {
+    //if (!cookie.get("auth_token"))
+    //TODO redirect to home if not auth
     super(props);
     this.state = {
       matches: [
-        { name: "Zaphod Beeblebrox", messages: ["hello", "nah"]},
-        { name: "Arthur Dent", messages: ["hogy bassza oket telibe", "ezeket a jo elet"] },
-        { name: "Marvin", messages: [] }
+        // { name: "Zaphod Beeblebrox", messages: ["hello", "nah"]},
+        // { name: "Arthur Dent", messages: ["hogy bassza oket telibe", "ezeket a jo elet"] },
+        // { name: "Marvin", messages: [] }
       ],
       currentChatPartner: { name: "", messages: []},
       selectedQueue: "spotify"
     };
   }
+
+
 
   componentDidMount = () => {
     let url = window.location.href;
@@ -43,9 +47,14 @@ class Chat extends React.Component {
       connectSpotifyToUser(spotify_code); 
     }
     if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
+      //TODO fix refresh token request
       //refreshSpotifyToken();
     }
 
+    let chats = localStorage.getItem('chats');
+    if (chats) {
+      this.setState({matches: JSON.parse(chats)});
+    }
     
   };
   
@@ -61,7 +70,8 @@ class Chat extends React.Component {
     if (this.state.selectedQueue === "spotify")
       getSpotifyMatch();
     else getPreferenceMatch();
-
+    //TODO: set gotten match in localStore and/or state
+    localStorage.setItem('chats', JSON.stringify(this.state.matches))
   }
 
 
@@ -109,13 +119,14 @@ class Chat extends React.Component {
               </div>
             </div>
             <div className="d-flex flex-column flex-md-grow-1 ml-auto mr-4">
-              <div className="my-3 p-md-3 rounded-top d-flex align-items-center justify-content-between">
-              <Image
-                src="/static/pusheen.jpg"
-                className="partner-thumbnail img-thumbnail rounded-circle mr-3"
-              />
-                <p className="mb-0">Now listening to Six Foe: <b>Seasons</b></p>
-                <Button onClick={e => this.getCurrentlyPlaying(e)}>
+              <div className="my-3 p-md-3 rounded-top d-flex align-items-center">
+                <Image
+                  src="/static/pusheen.jpg"
+                  className="partner-thumbnail img-thumbnail rounded-circle mr-3"
+                />
+                <span className="font-weight-bold">{this.state.currentChatPartner.name} &nbsp;</span>
+                <p className="mb-0"> now listening to Six Foe: <b>Seasons</b></p>
+                <Button className="ml-auto" onClick={e => this.getCurrentlyPlaying(e)}>
                   Leave chat
                 </Button>
               </div>

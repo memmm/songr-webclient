@@ -93,7 +93,7 @@ export const logoutUser = () => {
   // to support logging out from all windows
   cookie.set("logout", Date.now());
   delete axios.defaults.headers.common['Authorization'];
-  Router.push("/");
+  
 };
 
 export const getUserData = () => dispatch => {
@@ -106,11 +106,11 @@ export const getUserData = () => dispatch => {
 };
 
 
-export const uploadImage = (formData) => (dispatch) => {
-  dispatch({ type: LOADING_USER });
+export const uploadImage = (formData) => {
   axios
-    .post('/user/image', formData)
+    .post(`${songrService}/user/image`, formData)
     .then(() => {
+      //get user data to see thumbnail
       dispatch(getUserData());
     })
     .catch((err) => console.log(err));
