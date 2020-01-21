@@ -41,7 +41,7 @@ class LoginRegisterTabs extends React.Component {
       this.setState({ validated: true});
     } else {
       const userData = {
-        email: this.state.username,
+        username: this.state.username,
         password: this.state.password
       };
       loginUser(userData);
