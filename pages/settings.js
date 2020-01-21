@@ -4,6 +4,7 @@ import ListItems from "../components/ListItems";
 import ImageUpload from "../components/ImageUpload";
 import axios from "axios";
 import { spotifyWebApiURL } from "../utils/constants";
+import cookie from "js-cookie";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -13,6 +14,8 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
+import { getUserData } from "../store/actions/userActions";
+import cookies from "next-cookies";
 
 export default class Settings extends React.Component {
   static async getInitialProps({ req, res }) {
@@ -38,18 +41,20 @@ export default class Settings extends React.Component {
     };
   }
 
-  changeSettings() {}
-  addSong() {}
-  addGenre() {}
-  addArtist(e) {
-    e.preventDefault();
-  }
   onClickloginWithSpotify = event => {
     event.preventDefault();
     //Could have: set state param in the redirect URI for security
     document.location = spotifyWebApiURL;
      
   };
+
+  changeSettings() {}
+  addSong() {}
+  addGenre() {}
+  addArtist(e) {
+    e.preventDefault();
+  }
+     
   render() {
     return (
       <Layout className="h-100">
@@ -85,6 +90,10 @@ export default class Settings extends React.Component {
                 </div>
               </div>
               <div className="mt-5">
+              {cookie.get("spotify_refresh_token") ? (
+                <label className="mb-0">Connected to Spotify</label>
+              ) : (
+                <div>
                 <label className="mb-0">Not connected to Spotify</label>
                 <Form.Text className="text-muted">
                   Connect now to enjoy everything Songr has to offer!
@@ -95,7 +104,9 @@ export default class Settings extends React.Component {
                   onClick={e => this.onClickloginWithSpotify(e)}
                 >
                   Connect
-                </Button>
+              </Button>
+              </div>
+              )}
               </div>
             </Col>
             <Col xs={12} md={{ span: 8, offset: 0 }} className="px-0 px-md-2">
