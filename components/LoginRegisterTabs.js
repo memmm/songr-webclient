@@ -35,13 +35,13 @@ class LoginRegisterTabs extends React.Component {
 
   onClicklogin = e => {
     const form = e.currentTarget;
+    e.preventDefault();
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
       this.setState({ validated: true});
     } else {
       const userData = {
-        email: this.state.email,
+        email: this.state.username,
         password: this.state.password
       };
       loginUser(userData);
@@ -73,13 +73,13 @@ class LoginRegisterTabs extends React.Component {
         <Tab eventKey="login" title="Login">
           <Form  noValidate validated={this.state.validated} onSubmit={this.onClicklogin} className="p-3">
             <Form.Group controlId="formLoginEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Username</Form.Label>
               <Form.Control
                 required
-                type="email"
-                placeholder="Email"
-                value={this.state.email}
-                name="email"
+                type="text"
+                placeholder="Username"
+                value={this.state.username}
+                name="username"
                 onChange={e => this.handleChange(e)}
               />
               <Form.Control.Feedback type="invalid">
@@ -102,7 +102,7 @@ class LoginRegisterTabs extends React.Component {
               </Form.Control.Feedback>
             </Form.Group>
             <Button
-              variant="primary"
+              variant="success"
               type="submit"
               className="w-100"
             >
@@ -162,7 +162,7 @@ class LoginRegisterTabs extends React.Component {
               <Form.Check required type="checkbox" label="I accept everything." />
             </Form.Group>
             <Button
-              variant="primary"
+              variant="success"
               type="submit"
               className="w-100"
             >

@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../components/Layout";
 import ListItems from "../components/ListItems";
+import ImageUpload from "../components/ImageUpload";
 import axios from "axios";
 import { spotifyWebApiURL } from "../utils/constants";
 
@@ -15,6 +16,9 @@ import Form from "react-bootstrap/Form";
 
 export default class Settings extends React.Component {
   static async getInitialProps({ req, res }) {
+
+    //TODO get user preferences if not stored yet in localStorage
+    //return them as props
     let artists;
     await axios
       .post(`https://jsonplaceholder.typicode.com/users`, {
@@ -32,7 +36,6 @@ export default class Settings extends React.Component {
     this.state = {
       artists: []
     };
-    // this.state = { loggedIn: false }
   }
 
   changeSettings() {}
@@ -49,9 +52,9 @@ export default class Settings extends React.Component {
   };
   render() {
     return (
-      <Layout>
-        <Container className="settings-container mx-auto mt-md-5">
-          <Row>
+      <Layout className="h-100">
+        <Container className="settings-container mx-auto mt-md-5 h-100">
+          <Row className="settings-row">
             <Col xs={12} md={4} className="section py-3">
               <div className="d-flex justify-content-between">
                 <h4>Account Settings</h4>
@@ -76,13 +79,9 @@ export default class Settings extends React.Component {
                   aria-label="email"
                   aria-describedby="basic-addon2"
                 />
-                <div className="d-flex justify-content-between align-items-start mt-3">
+                <div className="mt-3">
                   <label className="">Thumbnail:</label>
-                  <Image
-                    className="thumbnail p-0"
-                    src="static/pusheen.jpg"
-                    thumbnail
-                  />
+                  <ImageUpload/>
                 </div>
               </div>
               <div className="mt-5">

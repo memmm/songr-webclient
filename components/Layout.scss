@@ -55,8 +55,8 @@ body,
     }
 
     .loggedin-panel {
-        border-radius: 25px;
-        border: 1px solid white;
+        img { height: 100%; }
+        i { font-size: 2rem;}
     }
 }
 
@@ -174,6 +174,26 @@ h5 {
 
 //settings related
 .settings-container {
+    input[type="file"] {
+        display: none;
+    }
+    .custom-file-upload {
+        border: 1px solid rgb(161, 161, 161);
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+    .img-preview img {
+        max-width: 100%;
+        border-radius: 50%;
+
+    }
+    .settings-row {
+        height: 100%;
+        @media screen and (min-width: 768px) {
+            height: 85%;
+        }
+    }
     .section {
         background: $secondary;
         box-shadow: 1px 1px 16px -2px rgba(0, 0, 0, 0.3);

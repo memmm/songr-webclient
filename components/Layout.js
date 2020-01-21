@@ -27,6 +27,10 @@ class Layout extends React.Component {
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossOrigin="anonymous"
         />
+        <link 
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+          crossOrigin="anonymous"/>
       </Head>
         <Header />
         <div className="Content">{this.props.children}</div>

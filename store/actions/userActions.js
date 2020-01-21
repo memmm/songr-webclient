@@ -7,13 +7,12 @@ import qs from 'qs';
 
 export const loginUser = userData => {
   axios
-    .post(`${songrService}auth/signin`, {username: userData.email, password: userData.password})
+    .post(`${songrService}auth/signin`, userData)
     .then(res => {
-      console.log(res.data);
       //const SongrToken = `Bearer ${res.data}`;
       const SongrToken = `Bearer TEST`;
       cookie.set("auth_token", SongrToken, { expires: 1 });
-      cookie.set("auth_user", {username: userData.email}, { expires: 1 });
+      cookie.set("auth_user", {username: userData.username}, { expires: 1 });
       if (cookie.get("spotify_refresh_token")) {
         refreshSpotifyToken();
       }
@@ -23,7 +22,7 @@ export const loginUser = userData => {
     .catch(err => {
       console.log(err.response.data);
     });
-  //This is only for test:
+  //This is only for test if there is no backend:
   // const SongrToken = `Bearer TEST`; 
   // cookie.set("auth_token", SongrToken, { expires: 1 });
   // cookie.set("auth_user", {email: userData.email}, { expires: 1 });
@@ -105,10 +104,27 @@ export const getUserData = () => dispatch => {
     .catch(err => console.log(err));
 };
 
-
-export const uploadImage = (formData) => {
+export const updateUserInfo = (formData) => {
+  let token = cookie.get("auth_token");
   axios
-    .post(`${songrService}/user/image`, formData)
+    .post(`${songrService}user/${token}/set-user`, formData)
+    .then(() => {
+      //get user data to see changes
+      dispatch(getUserData());
+    })
+    .catch((err) => console.log(err));
+};
+
+
+export const uploadImage = (image) => {
+  let token = cookie.get("auth_token");
+  const file = new Blob([image]);
+  const formData = new FormData();
+  formData.append('thumbnail', file, file.filename);
+  axios
+    .post(`${songrService}user/${token}/upload-thumbnail`, formData, {
+      //headers: { 'content-type': 'multipart/form-data' }
+    })
     .then(() => {
       //get user data to see thumbnail
       dispatch(getUserData());

@@ -29,7 +29,7 @@ class Header extends React.Component {
               </Link>
 
               <a onClick={e => logoutUser()} className="logout-btn">
-                Logout
+              <i className="fas fa-sign-out-alt"></i>
               </a>
             </li>
           )}
