@@ -41,7 +41,7 @@ export default class ImageUpload extends React.Component {
       if (imagePreviewUrl) {
         $imagePreview = (<img src={imagePreviewUrl} />);
       } else {
-        $imagePreview = (<div className="previewText">Upload an image for preview!</div>);
+        // $imagePreview = (<div className="previewText">Upload an image for preview!</div>);
       }
   
       return (
