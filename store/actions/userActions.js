@@ -18,9 +18,16 @@ export const loginUser = userData => {
       }
       axios.defaults.headers.common["Authorization"] = SongrToken;
       Router.push("/chat");
+      //TODO make this - for now test
+      localStorage.setItem('preferences', JSON.stringify({
+          tracks: [{artist: "artist1", track: "song1"}, { artist: "artist2", track: "song2"}],
+          artists: ["Caribou", "Jon Hopkins", "Rival Consoles"],
+          genres: ["electronica", "ambient"]
+      }))
+
     })
     .catch(err => {
-      console.log(err.response.data);
+      console.log(err.response);
     });
   //This is only for test if there is no backend:
   // const SongrToken = `Bearer TEST`; 

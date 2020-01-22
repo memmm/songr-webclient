@@ -1,32 +1,34 @@
 import React from "react";
-
+import { addGenre, addSong, addArtist, deleteGenre, deleteSong, deleteArtist } from "../store/actions/preferenceActions";
 class ListItem extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  hovered = event => {
+  hovered = e => {
+    e.preventDefault();
     console.log("nha");
   };
-  removeItem = event => {
+  removeItem = e => {
+    e.preventDefault();
     console.log("nha");
   };
   render() {
     return (
-      <ul className="pl-2">
-        {this.props.items.map((song, i) => (
-          <li
-            className="d-flex justify-content-between w-100"
-            onMouseEnter={e => this.hovered()}
-            key={i}
-          >
-            {song}
-            <a href="" onClick={e => this.removeItem()}>
-              Remove
-            </a>
-          </li>
-        ))}
-      </ul>
+        <ul className="list-items pl-2">
+          {this.props.items.map((item) => (
+            <li
+              className="d-flex py-1 justify-content-between w-100 item"
+              onMouseEnter={e => this.hovered(e)}
+              key={item.artist ? item.artist : item}
+            >
+              {item}
+              <a href="" onClick={e => this.removeItem(e)}>
+              <i className="fas fa-trash-alt"></i> Remove
+              </a>
+            </li>
+          ))} 
+        </ul>
     );
   }
 }

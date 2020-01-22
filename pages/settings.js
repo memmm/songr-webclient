@@ -2,7 +2,6 @@ import React from "react";
 import Layout from "../components/Layout";
 import ListItems from "../components/ListItems";
 import ImageUpload from "../components/ImageUpload";
-import axios from "axios";
 import { spotifyWebApiURL } from "../utils/constants";
 import cookie from "js-cookie";
 
@@ -12,33 +11,35 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
-import Image from "react-bootstrap/Image";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import { getUserData } from "../store/actions/userActions";
+import { addGenre, addSong, addArtist, deleteGenre, deleteSong, deleteArtist } from "../store/actions/preferenceActions";
 import cookies from "next-cookies";
 
 export default class Settings extends React.Component {
-  static async getInitialProps({ req, res }) {
-
-    //TODO get user preferences if not stored yet in localStorage
-    //return them as props
-    let artists;
-    await axios
-      .post(`https://jsonplaceholder.typicode.com/users`, {
-        name: "Vajak"
-      })
-      .then(res => {
-        artists = res.data;
-        console.log(res.data);
-      });
-    return { songs: ["first", "second"], artists };
-  }
-
   constructor(props) {
+    //if (!cookie.get("auth_token"))
+    //TODO redirect to home if not auth
     super(props);
     this.state = {
-      artists: []
+      preferences: {
+        artists: [],
+        tracks: [],
+        genres: []
+      }
     };
+  }
+
+  componentDidMount = () => {
+    
+    //TODO get user preferences if not stored yet in localStorage
+    //return them as props
+    const preferences = JSON.parse(localStorage.getItem('preferences'));
+    if (preferences){
+      preferences.tracks = preferences.tracks.map(x => `${x.artist}: ${x.track}`);
+      this.setState({preferences: preferences});
+    }
   }
 
   onClickloginWithSpotify = event => {
@@ -113,34 +114,79 @@ export default class Settings extends React.Component {
               <div className="section d-flex flex-column p-3 h-100">
                 <h4 className="mb-3">Preferences</h4>
                 <div className="d-flex flex-column h-100">
-                  <div className="pref-section">
+                  <div className="pref-section d-flex flex-column">
                     <div className="d-flex justify-content-between my-2">
                       <h5>Songs</h5>
-                      <a href="" onClick={this.addSong()}>
-                        Add
-                      </a>
                     </div>
 
-                    <ListItems items={this.props.songs}></ListItems>
+                    <ListItems items={this.state.preferences.tracks}></ListItems>
+                    <InputGroup className="mt-auto">
+                      <FormControl
+                        type="text"
+                        placeholder="Artist"
+                        aria-label="text"
+                      />
+                      <FormControl
+                        className="ml-1"
+                        type="text"
+                        placeholder="Title"
+                        aria-label="text"
+                      />
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-secondary"
+                          onClick={addSong}
+                          tabIndex="0"
+                        >
+                          ADD
+                        </Button>
+                      </InputGroup.Append>
+                    </InputGroup>
                   </div>
-                  <div className="pref-section">
+                  <div className="pref-section d-flex flex-column ">
                     <div className="d-flex justify-content-between my-2">
                       <h5>Genres</h5>
-                      <a href="" onClick={this.addGenre()}>
-                        Add
-                      </a>
                     </div>
-                    <ListItems items={this.props.songs}></ListItems>
+                    <ListItems items={this.state.preferences.genres}></ListItems>
+                    <InputGroup className="mt-auto">
+                      <FormControl
+                        type="text"
+                        placeholder="Genre"
+                        aria-label="text"
+                      />
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-secondary"
+                          onClick={addGenre}
+                          tabIndex="0"
+                        >
+                          ADD
+                        </Button>
+                      </InputGroup.Append>
+                    </InputGroup>
                   </div>
-                  <div className="pref-section">
+                  <div className="pref-section d-flex flex-column ">
                     <div className="d-flex justify-content-between my-2">
                       <h5>Artists</h5>
-                      <a href="" onClick={e => this.addArtist(e)}>
-                        Add
-                      </a>
                     </div>
 
-                    <ListItems items={this.state.artists}></ListItems>
+                    <ListItems items={this.state.preferences.artists}></ListItems>
+                    <InputGroup className="mt-auto">
+                      <FormControl
+                        type="text"
+                        placeholder="Artist"
+                        aria-label="text"
+                      />
+                      <InputGroup.Append>
+                        <Button
+                          variant="outline-secondary"
+                          onClick={addArtist}
+                          tabIndex="0"
+                        >
+                          ADD
+                        </Button>
+                      </InputGroup.Append>
+                    </InputGroup>
                   </div>
                 </div>
               </div>

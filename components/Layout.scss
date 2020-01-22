@@ -218,6 +218,20 @@ h5 {
     label {
         font-size: 0.8rem;
     }
+    //ListItem
+    .list-items {
+        .item {
+            a {
+                visibility: hidden;
+            }
+            &:hover {
+                a {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+
 }
 
 //about page
