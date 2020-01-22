@@ -5,6 +5,12 @@ import cookie from "js-cookie";
 import axios from "axios";
 import qs from 'qs';
 
+var intervalID;
+const getUserProp = (prop) => {
+  var user = JSON.parse(localStorage.getItem('auth_user'));
+  return user[prop];
+}
+
 export const sendChatMessage = (message) => {
     let token = cookie.get("auth_token");
     axios.post(`${songrService}chat/${token}/send-message`, null, { userId: "elsoke", chatId: "1", message: "testmessage" });
@@ -19,16 +25,28 @@ export const getChatMessage = () => {
 export const leaveChat = (message) => {
   let token = cookie.get("auth_token");
   axios.post(`${songrService}chat/${token}/endConversation`, null, { chatId: "elsoke" });
+  clearInterval(intervalID);
     
 }
 
-export const getPreferenceMatch = () => {
+export const joinPreferenceQueue = () => {
     let token = cookie.get("auth_token");
-    axios.post(`${songrService}chat/${token}/join-preference-queue`, null, {params:{ userId: token, userName: "elsoke" }});
+    axios.post(`${songrService}chat/${token}/join-preference-queue`, null, {
+      headers: {'Content-Type': 'application/json'},
+      params:{ userId: getUserProp('id'), userName: getUserProp('userName') }})
+    .then(res => {
+      console.log(res.data);
+      intervalID = setInterval(getChatMessage(), 5000);
+    })
+    .catch(err => {
+      console.error(err);
+    });
   }
 
-export const getSpotifyMatch = () => {
+export const joinSpotifyQueue = () => {
     let token = cookie.get("auth_token");
-    axios.post(`${songrService}chat/${token}/join-spotify-queue`, null, {params: { userId: token, userName: "elsoke"}});
+    axios.post(`${songrService}chat/${token}/join-spotify-queue`, null, {
+      headers: {'Content-Type': 'application/json'},
+      params: { userId: getUserProp('id'), userName: getUserProp('userName')}});
   }
 

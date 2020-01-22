@@ -10,11 +10,14 @@ export default class ChatStream extends React.Component {
     super(props);
     this.state = {
       message: "",
+      userId: ''
     };
   }
 
   componentDidMount = () => {
-    //localStorage
+    var userId = JSON.parse(localStorage.getItem('auth_user')).userId;
+   // setState({userId: userId});
+    
   }
 
   handleChange = e => {

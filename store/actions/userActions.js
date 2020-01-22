@@ -7,10 +7,10 @@ import qs from 'qs';
 
 export const loginUser = userData => {
   axios
-    .post(`${songrService}auth/signin`, null, {params: userData})
+    .get(`${songrService}user/login`, {params: userData})
     .then(res => {
-      //const SongrToken = `Bearer ${res.data}`;
-      const SongrToken = `Bearer TEST`;
+      console.log(res.data);
+      const SongrToken = `${res.data.token}`;
       cookie.set("auth_token", SongrToken, { expires: 1 });
       localStorage.setItem('auth_user', JSON.stringify(res.data));
       if (cookie.get("spotify_refresh_token")) {
@@ -35,6 +35,36 @@ export const loginUser = userData => {
   // cookie.set("auth_token", SongrToken, { expires: 1 });
   // cookie.set("auth_user", {email: userData.email}, { expires: 1 });
   //Router.push("/chat");
+};
+
+export const signupUser = (newUserData) => {
+  let isSuccess;
+  axios
+    .post(`${songrService}user/set-user`, null, {params: newUserData})
+    .then((res) => {
+      localStorage.setItem('auth_user', JSON.stringify(res.data));
+      var SongrToken = res.data.token;
+      cookie.set("auth_token", SongrToken, { expires: 1 });
+      Router.push("/settings");
+      isSuccess = true;
+    })
+    .catch((err) => {
+      console.error(err);
+      isSuccess = false;
+    });
+    return isSuccess;
+};
+
+export const logoutUser = () => {
+  let token = cookie.get("auth_token");
+  axios
+  .post(`${songrService}auth/signout`, null, {params: {token: token}})
+  cookie.remove("spotify_token");
+  cookie.remove("auth_token");
+  // to support logging out from all windows
+  cookie.set("logout", Date.now());
+  delete axios.defaults.headers.common['Authorization'];
+  Router.push('/');
 };
 
 export const connectSpotifyToUser = spotify_code => {
@@ -83,34 +113,7 @@ export const refreshSpotifyToken = () => {
         .catch(err => console.error(err));
 }
 
-export const signupUser = (newUserData) => {
-  let isSuccess;
-  axios
-    .post(`${songrService}user/set-user`, null, {params: newUserData})
-    .then((res) => {
-      setAuthorizationHeader(res.data.token);
-      dispatch(getUserData());
-      Router.push("/settings");
-      isSuccess = true;
-    })
-    .catch((err) => {
-      console.error(err);
-      isSuccess = false;
-    });
-    return isSuccess;
-};
 
-export const logoutUser = () => {
-  let token = cookie.get("auth_token");
-  axios
-  .post(`${songrService}auth/signout`, null, {params: {token: token}})
-  cookie.remove("spotify_token");
-  cookie.remove("auth_token");
-  // to support logging out from all windows
-  cookie.set("logout", Date.now());
-  delete axios.defaults.headers.common['Authorization'];
-  Router.push('/');
-};
 
 export const getUserData = () => {
   axios

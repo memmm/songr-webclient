@@ -9,7 +9,7 @@ import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { connectSpotifyToUser, refreshSpotifyToken, logoutUser } from "../store/actions/userActions";
-import { getPreferenceMatch, getSpotifyMatch } from "../store/actions/chatActions";
+import { joinPreferenceQueue, joinpotifyQueue } from "../store/actions/chatActions";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -67,8 +67,8 @@ class Chat extends React.Component {
   newChat = e => {
     e.preventDefault();
     if (this.state.selectedQueue === "spotify")
-      getSpotifyMatch();
-    else getPreferenceMatch();
+      joinSpotifyQueue();
+    else joinPreferenceQueue();
     //TODO: set gotten match in localStore and/or state
     localStorage.setItem('chats', JSON.stringify(this.state.matches))
   }

@@ -41,7 +41,7 @@ class LoginRegisterTabs extends React.Component {
       this.setState({ validated: true});
     } else {
       const userData = {
-        username: this.state.username,
+        userName: this.state.username,
         password: this.state.password
       };
       loginUser(userData);
@@ -50,14 +50,14 @@ class LoginRegisterTabs extends React.Component {
   }
 
   onClickRegister = e => {
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
       this.setState({ validated: true});
     } else {
       const userData = {
-        username: this.state.username,
+        userName: this.state.username,
         email: this.state.email,
         password: this.state.password
       };

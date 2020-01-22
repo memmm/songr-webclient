@@ -6,20 +6,24 @@ import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
 import { spotifyWebApiURL, spotifyPlayer } from "../utils/constants";
 
+var isConnected = false;
+
 export default class MusicController extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    isConnected = cookie.get('spotify_token');
     this.timeoutFetchCurrent = null;
     this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
   }
 
   componentDidMount = () => {
-    if (cookie.get('spotify_token'))
+    if (isConnected)
       this.getCurrentlyPlaying();
   };
 
   getCurrentlyPlaying(e) {
+    
     axios
       .get(`${spotifyPlayer}currently-playing`, {
         headers: {
@@ -39,7 +43,7 @@ export default class MusicController extends React.Component {
           () => this.getCurrentlyPlaying(),
           this.state.ms_left
         );
-        document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
+        if(res.data.is_playing) document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
       });
   }
 
@@ -48,18 +52,23 @@ export default class MusicController extends React.Component {
   };
 
   togglePlay(e) {
-    document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
-    if (!document.getElementsByClassName("btn-play")[0].classList.contains("pause")) {
+    e.preventDefault();
+    var btnClassList = document.getElementsByClassName("btn-play")[0].classList;
+    if (btnClassList.contains("pause")) {
       axios.put(spotifyPlayer + "pause", {}, {
         headers: {
           Authorization: "Bearer " + cookie.get('spotify_token')
         }
+      }).then(res => {
+        btnClassList.toggle("pause");
       });
     } else {
       axios.put(spotifyPlayer + "play", {}, {
         headers: {
           Authorization: "Bearer " + cookie.get('spotify_token')
         }
+      }).then(res => {
+        btnClassList.toggle("pause");
       });
     }
   }
@@ -89,11 +98,10 @@ export default class MusicController extends React.Component {
      
   };
 
-  //TODO: if there is no spoty token, show 'Connect to Spotify' button
   render() {
     return (
       <div className="music-controller w-100 d-inline-flex align-items-center">
-        {!(cookie.get('spotify_token')) ? (
+        {(!isConnected) ? (
         <Button
                   className="mt-3 w-25 "
                   variant="secondary"
