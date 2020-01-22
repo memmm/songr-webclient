@@ -22,6 +22,8 @@ export default class Settings extends React.Component {
     //TODO redirect to home if not auth
     super(props);
     this.state = {
+      email: '',
+      password: '',
       artists: [],
       tracks: [],
       genres: [],
@@ -89,20 +91,19 @@ export default class Settings extends React.Component {
             <Col xs={12} md={4} className="section py-3">
               <h4>Account Settings</h4>
               <div>
-                <label className="mb-1">Username:</label>
-                <FormControl
-                  aria-label="username"
-                  aria-describedby="basic-addon2"
-                />
                 <label className="mt-3 mb-1">Password:</label>
                 <FormControl
                   type="password"
                   aria-label="password"
+                  name="password"
+                  onChange={e => this.handleChange(e)}
                   aria-describedby="basic-addon2"
                 />
                 <label className="mt-3 mb-1">Email:</label>
                 <FormControl
                   aria-label="email"
+                  name="email"
+                  onChange={e => this.handleChange(e)}
                   aria-describedby="basic-addon2"
                 />
                 <Button

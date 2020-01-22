@@ -12,15 +12,16 @@ export const loginUser = userData => {
       //const SongrToken = `Bearer ${res.data}`;
       const SongrToken = `Bearer TEST`;
       cookie.set("auth_token", SongrToken, { expires: 1 });
-      cookie.set("auth_user", {username: userData.username}, { expires: 1 });
+      localStorage.setItem('auth_user', JSON.stringify(res.data));
       if (cookie.get("spotify_refresh_token")) {
         refreshSpotifyToken();
       }
       axios.defaults.headers.common["Authorization"] = SongrToken;
       Router.push("/chat");
       //TODO make this - for now test
-      localStorage.setItem('preferences', JSON.stringify({
-          tracks: [{artist: "artist1", track: "song1"}, { artist: "artist2", track: "song2"}],
+      localStorage.setItem(
+        'preferences', JSON.stringify({
+          tracks: [["artist1", "song1"], ["artist2", "song2"]],
           artists: ["Caribou", "Jon Hopkins", "Rival Consoles"],
           genres: ["electronica", "ambient"]
       }))
@@ -82,10 +83,10 @@ export const refreshSpotifyToken = () => {
         .catch(err => console.error(err));
 }
 
-export const signupUser = (newUserData, history) => {
+export const signupUser = (newUserData) => {
   let isSuccess;
   axios
-    .post(`${songrService}auth/signup`, null, {params: newUserData})
+    .post(`${songrService}user/set-user`, null, {params: newUserData})
     .then((res) => {
       setAuthorizationHeader(res.data.token);
       dispatch(getUserData());
@@ -105,7 +106,6 @@ export const logoutUser = () => {
   .post(`${songrService}auth/signout`, null, {params: {token: token}})
   cookie.remove("spotify_token");
   cookie.remove("auth_token");
-  cookie.remove("auth_user");
   // to support logging out from all windows
   cookie.set("logout", Date.now());
   delete axios.defaults.headers.common['Authorization'];
@@ -116,7 +116,7 @@ export const getUserData = () => {
   axios
     .get("/user")
     .then(res => {
-      cookie.set("auth_user", res.data);
+      localStorage.setItem('auth_user', JSON.stringify(res.data));
     })
     .catch(err => console.log(err));
 };
