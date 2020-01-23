@@ -1,4 +1,3 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, SET_AUTHENTICATED } from "../types";
 import { spotifyTokenURL, redirectURI, clientID, clientSecret, songrService } from "../../utils/constants";
 import Router from "next/router";
 import cookie from "js-cookie";
@@ -151,7 +150,7 @@ export const uploadImage = (image) => {
   formData.append('thumbnail', file, file.filename);
   //formData.append('userName', getUserData('userName'));
   axios
-    .post(`${songrService}user/${token}/upload-thumbnail`, formData, {
+    .post(`${songrService}user/${token}/upload-thumbnail`, file, {
       headers: { 'content-type': 'multipart/form-data' },
       params: { userName: getUserProp('userName') }
     })

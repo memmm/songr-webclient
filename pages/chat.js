@@ -1,23 +1,22 @@
 import React from "react";
-import Link from "next/link";
 import axios from "axios";
 import cookie from "js-cookie";
 import { connect } from "react-redux";
+import { spotifyTokenURL, redirectURI, clientID, clientSecret, songrService } from "../utils/constants";
 
 import Layout from "../components/Layout";
 import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { connectSpotifyToUser, refreshSpotifyToken, logoutUser } from "../store/actions/userActions";
-import { joinPreferenceQueue, joinpotifyQueue, sendChatMessage, getChatMessage, leaveChat } from "../store/actions/chatActions";
 
 //bootstrap components
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+
+var intervalID;
+var token;
 
 class Chat extends React.Component {
   constructor(props) {
@@ -25,17 +24,11 @@ class Chat extends React.Component {
     //TODO redirect to home if not auth
     super(props);
     this.state = {
-      matches: [
-        // { name: "Zaphod Beeblebrox", messages: ["hello", "nah"]},
-        // { name: "Arthur Dent", messages: ["hogy bassza oket telibe", "ezeket a jo elet"] },
-        // { name: "Marvin", messages: [] }
-      ],
+      chats: [],
       currentChatPartner: { name: "", messages: []},
       selectedQueue: "spotify"
     };
   }
-
-
 
   componentDidMount = () => {
     let url = window.location.href;
@@ -49,13 +42,11 @@ class Chat extends React.Component {
     if (cookie.get("spotify_refresh_token") && !cookie.get("spotify_token")) {
       refreshSpotifyToken();
     }
-
-    let chats = localStorage.getItem('chats');
-    if (chats) {
-      this.setState({matches: JSON.parse(chats)});
-    }
+    token = cookie.get("auth_token");
+    //setTimeout(this.setState({chats:getChats()}), 5000);
   };
-  
+
+
   handleOptionChange = changeEvent => {
     this.setState({
       selectedQueue: changeEvent.target.value
@@ -66,20 +57,12 @@ class Chat extends React.Component {
   newChat = e => {
     e.preventDefault();
     if (this.state.selectedQueue === "spotify")
-      joinSpotifyQueue();
-    else joinPreferenceQueue();
+      this.joinSpotifyQueue();
+    else this.joinPreferenceQueue();
     //TODO: set gotten match in localStore and/or state
-    localStorage.setItem('chats', JSON.stringify(this.state.matches))
+    localStorage.setItem('chats', JSON.stringify(this.state.chats))
   }
 
-
-
-  leaveChat = e => {
-    e.preventDefault();
-    //TODO: empty current chat window, delete user from list
-    
-    leaveChat('partnerId'); //TODO add partnerID
-  }
 
   render() {
     return (
@@ -110,7 +93,7 @@ class Chat extends React.Component {
                 </div>
               </Form>
               <div className="d-flex d-md-block my-2 my-md-0">
-                {this.state.matches.map((x, i) => (
+                {this.state.chats.map((x, i) => (
                   <ChatCard
                     key={i}
                     match={x}
@@ -140,6 +123,90 @@ class Chat extends React.Component {
         </div>
       </Layout>
     );
+  }
+
+  getUserProp = (prop) => {
+    var user = JSON.parse(localStorage.getItem('auth_user'));
+    return user[prop];
+  }
+
+  getChats = () => {
+    var chats = JSON.parse(localStorage.getItem('chats'));
+    return chats;
+  }
+
+  setChats = (chats) => {
+    localStorage.setItem(JSON.stringify(chats));
+  }
+
+  joinPreferenceQueue = () => {
+    clearInterval(intervalID);
+    axios.post(`${songrService}chat/${token}/join-preference-queue`, null, {
+      headers: {'Content-Type': 'application/json'},
+      params:{ userId: this.getUserProp('id'), userName: this.getUserProp('userName') }})
+    .then(res => {
+      this.getPartner(res.data.messages);
+      intervalID = setInterval(this.getChatMessage, 5000);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }
+
+  joinSpotifyQueue = () => {
+    
+    axios.post(`${songrService}chat/${token}/join-spotify-queue`, null, {
+      headers: {'Content-Type': 'application/json'},
+      params: { userId: this.getUserProp('id'), userName: this.getUserProp('userName')}});
+  }
+
+  leaveChat = (e) => {
+    e.preventDefault();
+    axios.post(`${songrService}chat/${token}/endConversation`, null, {
+      headers: {'Content-Type': 'application/json'}, 
+      params: { senderId: this.getUserProp('id'), receiverId: this.state.currentChatPartner.userId }});
+    clearInterval(intervalID);
+    this.setState({});
+    // var chats = getChats();
+    // var chatToRemove = chats.map(x => x.id == partnerId);
+    // chats.splice( chats.indexOf(chatToRemove), 1 );  
+    // setChats(chats);
+  }
+
+  getChatMessage = () => {
+    axios.post(`${songrService}chat/${token}/get-messages`, null, { 
+      headers: {'Content-Type': 'application/json'}, 
+      params: { userId: this.getUserProp('id') } })
+      .then(res => {
+        this.getPartner(res.data.messages);
+          // var chats = getChats();
+          // chats.push({
+          //   name: newUser.userName,
+          //   id: newUser.userId,
+          //   messages: []
+          // });
+         // localStorage.setItem('chats', chats);
+        
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  sendChatMessage = (partnerId, message) => {
+    axios.post(`${songrService}chat/${token}/send-message`, null, { 
+      headers: {'Content-Type': 'application/json'}, 
+      params: { senderId: getUserProp('id'), receiverId: partnerId, message: message } });
+  }
+
+  getPartner = (messages) => {
+    var m = messages.find(x => x.response.userName != null).response;
+        console.log(m);
+        if (m != null) {
+          let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
+          this.setState({chats: [...this.state.chats, newPartner]});
+          this.setState({currentChatPartner: newPartner});
+        }
   }
   
 }
