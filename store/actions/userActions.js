@@ -150,7 +150,7 @@ export const uploadImage = (image) => {
   formData.append('thumbnail', file, file.filename);
   //formData.append('userName', getUserData('userName'));
   axios
-    .post(`${songrService}user/${token}/upload-thumbnail`, file, {
+    .post(`${songrService}user/${token}/upload-thumbnail`, formData, {
       headers: { 'content-type': 'multipart/form-data' },
       params: { userName: getUserProp('userName') }
     })
