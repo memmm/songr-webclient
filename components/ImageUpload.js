@@ -10,8 +10,8 @@ export default class ImageUpload extends React.Component {
     _handleSubmit(e) {
       e.preventDefault();
       if (this.state.file != '')
-      uploadImage(this.state.file);
-      console.log('uploading ', this.state.file);
+      uploadImage(this.state.imagePreviewUrl);
+      console.log('uploading ', this.state.imagePreviewUrl);
     }
   
     _handleImageChange(e) {

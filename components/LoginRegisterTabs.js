@@ -45,7 +45,7 @@ class LoginRegisterTabs extends React.Component {
         password: this.state.password
       };
       loginUser(userData);
-      setTimeout(this.setState({ message: "The authentication was unsuccessful."}), 3000);
+      setTimeout(this.setState({ message: "The authentication was unsuccessful."}), 5000);
     }
   }
 

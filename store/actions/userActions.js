@@ -5,9 +5,15 @@ import cookie from "js-cookie";
 import axios from "axios";
 import qs from 'qs';
 
+const getUserProp = (prop) => {
+  var user = JSON.parse(localStorage.getItem('auth_user'));
+  return user[prop];
+}
+
 export const loginUser = userData => {
   axios
-    .get(`${songrService}user/login`, {params: userData})
+    .post(`${songrService}user/login`, null, {
+      params: userData})
     .then(res => {
       console.log(res.data);
       const SongrToken = `${res.data.token}`;
@@ -137,13 +143,17 @@ export const updateUserInfo = (formData) => {
 
 
 export const uploadImage = (image) => {
+
   let token = cookie.get("auth_token");
   const file = new Blob([image]);
+  console.log(file);
   const formData = new FormData();
   formData.append('thumbnail', file, file.filename);
+  //formData.append('userName', getUserData('userName'));
   axios
     .post(`${songrService}user/${token}/upload-thumbnail`, formData, {
-      //headers: { 'content-type': 'multipart/form-data' }
+      headers: { 'content-type': 'multipart/form-data' },
+      params: { userName: getUserProp('userName') }
     })
     .then(() => {
       //get user data to see thumbnail

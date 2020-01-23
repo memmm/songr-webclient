@@ -9,7 +9,7 @@ import ChatCard from "../components/ChatCard";
 import MusicController from "../components/MusicController";
 import ChatStream from "../components/ChatStream";
 import { connectSpotifyToUser, refreshSpotifyToken, logoutUser } from "../store/actions/userActions";
-import { joinPreferenceQueue, joinpotifyQueue } from "../store/actions/chatActions";
+import { joinPreferenceQueue, joinpotifyQueue, sendChatMessage, getChatMessage, leaveChat } from "../store/actions/chatActions";
 
 //bootstrap components
 import Container from "react-bootstrap/Container";
@@ -54,7 +54,6 @@ class Chat extends React.Component {
     if (chats) {
       this.setState({matches: JSON.parse(chats)});
     }
-    
   };
   
   handleOptionChange = changeEvent => {
@@ -75,8 +74,11 @@ class Chat extends React.Component {
 
 
 
-  leaveChat() {
+  leaveChat = e => {
+    e.preventDefault();
     //TODO: empty current chat window, delete user from list
+    
+    leaveChat('partnerId'); //TODO add partnerID
   }
 
   render() {
@@ -125,7 +127,7 @@ class Chat extends React.Component {
                 />
                 <span className="font-weight-bold">{this.state.currentChatPartner.name} &nbsp;</span>
                 <p className="mb-0"> now listening to Six Foe: <b>Seasons</b></p>
-                <Button className="ml-auto" onClick={e => this.getCurrentlyPlaying(e)}>
+                <Button className="ml-auto" onClick={e => this.leaveChat(e)}>
                   Leave chat
                 </Button>
               </div>

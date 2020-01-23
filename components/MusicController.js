@@ -22,8 +22,8 @@ export default class MusicController extends React.Component {
       this.getCurrentlyPlaying();
   };
 
-  getCurrentlyPlaying(e) {
-    
+  getCurrentlyPlaying() {
+    clearTimeout(this.timeoutFetchCurrent);
     axios
       .get(`${spotifyPlayer}currently-playing`, {
         headers: {
@@ -73,22 +73,18 @@ export default class MusicController extends React.Component {
     }
   }
 
-  getNextSong(e) {
+  getSong(e, direction) {
     e.preventDefault();
-    axios.post(spotifyPlayer + "next", {}, {
-      headers: {
-        Authorization: "Bearer " + cookie.get('spotify_token')
-      }
-    });
-  }
-
-  getPreviousSong(e){
-    e.preventDefault();
-    axios.post(spotifyPlayer + "previous", {}, {
-      headers: {
-        Authorization: "Bearer " + cookie.get('spotify_token')
-      }
-    });
+    if (cookie.get('spotify_token')){
+      axios.post(spotifyPlayer + direction, {}, {
+        headers: {
+          Authorization: "Bearer " + cookie.get('spotify_token')
+        }
+      });
+    } else {
+      //TODO animate connect button
+      console.log("Connect to Spotify to use these buttons!");
+    }
   }
 
   onClickloginWithSpotify = event => {
@@ -103,7 +99,7 @@ export default class MusicController extends React.Component {
       <div className="music-controller w-100 d-inline-flex align-items-center">
         {(!isConnected) ? (
         <Button
-                  className="mt-3 w-25 "
+                  className="connect-btn mt-3 w-25 "
                   variant="secondary"
                   onClick={e => this.onClickloginWithSpotify(e)}
                 >
@@ -116,14 +112,14 @@ export default class MusicController extends React.Component {
         </p>)
   }
         <div className="ml-auto d-flex flex-nowrap align-items-center">
-          <div className="button btn-prev" onClick={e => this.getPreviousSong(e)}>
+          <div className="button btn-prev" onClick={e => this.getSong(e, "previous")}>
             <div></div>
           </div>
           <div className="button btn-play" onClick={e => this.togglePlay(e)}>
             <div></div>
           </div>
           <div
-            className="button btn-next" onClick={e => this.getNextSong(e)}
+            className="button btn-next" onClick={e => this.getSong(e, "next")}
           >
             <div></div>
           </div>

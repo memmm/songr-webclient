@@ -11,20 +11,26 @@ const getUserProp = (prop) => {
   return user[prop];
 }
 
-export const sendChatMessage = (message) => {
+export const sendChatMessage = (partnerId, message) => {
     let token = cookie.get("auth_token");
-    axios.post(`${songrService}chat/${token}/send-message`, null, { userId: "elsoke", chatId: "1", message: "testmessage" });
+    axios.post(`${songrService}chat/${token}/send-message`, null, { 
+      headers: {'Content-Type': 'application/json'}, 
+      params: { senderId: getUserProp('id'), receiverId: partnerId, message: message } });
   
 }
 
 export const getChatMessage = () => {
   let token = cookie.get("auth_token");
-  axios.post(`${songrService}chat/${token}/get-messages`, null, { userId: "elsoke" });
+  axios.post(`${songrService}chat/${token}/get-messages`, null, { 
+    headers: {'Content-Type': 'application/json'}, 
+    params: { userId: getUserProp('id') } });
 }
 
-export const leaveChat = (message) => {
+export const leaveChat = (partnerId) => {
   let token = cookie.get("auth_token");
-  axios.post(`${songrService}chat/${token}/endConversation`, null, { chatId: "elsoke" });
+  axios.post(`${songrService}chat/${token}/endConversation`, null, {
+    headers: {'Content-Type': 'application/json'}, 
+    params: { senderId: getUserProp('id'), receiverId: partnerId }});
   clearInterval(intervalID);
     
 }
