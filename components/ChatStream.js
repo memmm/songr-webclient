@@ -40,13 +40,12 @@ export default class ChatStream extends React.Component {
   sendMessage = () => {
     let token = cookie.get("auth_token");
     if (this.state.message) {
-      this.props.chatPartner.messages = this.props.chatPartner.messages.concat(this.state.message);
+      this.props.chatPartner.messages = this.props.chatPartner.messages.push([this.state.message, 'me']);
     }
     axios.post(`${songrService}chat/${token}/send-message`, null, { 
       headers: {'Content-Type': 'application/json'}, 
       params: { senderId: this.getUserProp('id'), receiverId: this.props.chatPartner.userId, message: this.state.message } });
     this.setState({ message: "" });
-    console.log(document.getElementsByClassName("chat-input-field"));
     document.getElementsByClassName("chat-input-field").value ="";
   }
   render() {
