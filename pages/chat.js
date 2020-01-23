@@ -148,8 +148,8 @@ class Chat extends React.Component {
       if (res.data.messages != null){
         console.log(res.data);
         var m = res.data.messages.find(x => x.response.userName != null);
-        m = m.response;
           if (m != null) {
+            m = m.response;
             let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
             this.setState({chats: [...this.state.chats, newPartner]});
             this.setState({currentChatPartner: newPartner});
