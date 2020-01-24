@@ -81,10 +81,14 @@ export default class Settings extends React.Component {
     e.preventDefault();
     if (category == 'tracks'){
       this.setState({tracks: [...this.state.tracks, [this.state.trackArtistInput, ": ",  this.state.trackTitleInput]]});
+      this.setState({trackArtistInput: ""}); document.getElementsByName("trackArtistInput")[0].value ="";
+      this.setState({trackTitleInput: ""}); document.getElementsByName("trackTitleInput")[0].value ="";
     } else if (category == 'artists') {
       this.setState({artists: [...this.state.artists, this.state.artistInput]});
+      this.setState({artistInput: ""}); document.getElementsByName("artistInput")[0].value ="";
     } else if (category == 'genres') {
       this.setState({genres: [...this.state.genres, this.state.genreInput]});
+      this.setState({genreInput: ""}); document.getElementsByName("genreInput")[0].value ="";
     }
   }
      
