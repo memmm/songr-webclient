@@ -150,13 +150,19 @@ h5 {
     label {
         font-size: 0.8rem;
     }
+    .chat-card-container {
+        @media screen and (max-width: 767px) {
+            border-bottom: 1px solid #343a40;
+            padding-bottom: .5rem;
+        }
+    }
 
     .chat-card {
         cursor: pointer;
         img {
             height: 4rem;
         }
-
+        
         @media screen and (min-width: 768px) {
             border-bottom: 1px solid #343a40;
         }

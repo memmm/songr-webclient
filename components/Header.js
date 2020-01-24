@@ -18,7 +18,7 @@ class Header extends React.Component {
           <li>
             <Link href={cookie.get('auth_token') ? "/chat" : "/"}>
               <a>
-                <h1 className="title">SongR</h1>
+                <h1 className="title mb-0">SongR</h1>
               </a>
             </Link>
           </li>

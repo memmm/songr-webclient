@@ -96,7 +96,7 @@ class Chat extends React.Component {
                   <Button type="submit">NEW CHAT</Button>
                 </div>
               </Form>
-              <div className="d-flex d-md-block my-2 my-md-0">
+              <div className="d-flex d-md-block my-2 my-md-0 chat-card-container">
                 {this.state.chats.map((x, i) => (
                   <ChatCard
                     key={i}
@@ -111,12 +111,12 @@ class Chat extends React.Component {
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center">
                 <Image
                   src="/static/pusheen.jpg"
-                  className="partner-thumbnail img-thumbnail rounded-circle mr-3"
+                  className="partner-thumbnail img-thumbnail rounded-circle mr-3 d-none d-md-block"
                 />
-                <span className="font-weight-bold">{this.state.currentChatPartner.name} &nbsp;</span>
-                <p className="mb-0"> now listening to Six Foe: <b>Seasons</b></p>
+                <span className="font-weight-bold">{this.state.currentChatPartner.name } &nbsp;</span>
+                <p className="mb-0 d-none d-md-block"> is now listening to Six Foe: <b>Seasons</b></p>
                 <Button variant="secondary" className="ml-auto" onClick={e => this.leaveChat(e)}>
-                  Leave chat
+                  Leave <span className="d-none d-md-block">chat</span>
                 </Button>
               </div>)}
               <ChatStream chatPartner= {this.state.currentChatPartner} />
