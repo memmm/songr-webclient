@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
 import Message from "./Message";
+import { songrService } from "../utils/constants";
+import cookie from "js-cookie";
 
 export default class ChatStream extends React.Component {
   constructor(props) {
@@ -30,12 +32,20 @@ export default class ChatStream extends React.Component {
     }
   }
 
+  getUserProp = (prop) => {
+    var user = JSON.parse(localStorage.getItem('auth_user'));
+    return user[prop];
+  }
+
   sendMessage = () => {
+    let token = cookie.get("auth_token");
     if (this.state.message) {
-      this.props.chatPartner.messages = this.props.chatPartner.messages.concat(this.state.message);
+      this.props.chatPartner.messages.push([this.state.message, this.getUserProp('id')]);
     }
+    axios.post(`${songrService}chat/${token}/send-message`, null, { 
+      headers: {'Content-Type': 'application/json'}, 
+      params: { senderId: this.getUserProp('id'), receiverId: this.props.chatPartner.userId, message: this.state.message } });
     this.setState({ message: "" });
-    console.log(document.getElementsByClassName("chat-input-field"));
     document.getElementsByClassName("chat-input-field").value ="";
   }
   render() {
@@ -47,7 +57,7 @@ export default class ChatStream extends React.Component {
         <span className="m-auto">Say hi to your new match or skip the conversation with the button above.</span>}
       <div className="overflow-auto">
         {this.props.chatPartner.messages.map((x, i) => (
-          <Message key={i} message={x}></Message>
+          <Message key={i} message={x} className="`${x.userId}`"></Message>
         ))}
       </div>
       {this.props.chatPartner.name != "" && <InputGroup className="">

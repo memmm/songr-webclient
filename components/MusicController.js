@@ -5,6 +5,7 @@ import axios from "axios";
 import cookie from "js-cookie";
 import Button from "react-bootstrap/Button";
 import { spotifyWebApiURL, spotifyPlayer } from "../utils/constants";
+import { refreshSpotifyToken} from "../store/actions/userActions";
 
 var isConnected = false;
 
@@ -44,6 +45,11 @@ export default class MusicController extends React.Component {
           this.state.ms_left
         );
         if(res.data.is_playing) document.getElementsByClassName("btn-play")[0].classList.toggle("pause");
+      })
+      .catch(err => {
+        if(err.status == 401){
+          refreshSpotifyToken();
+        }
       });
   }
 
@@ -106,11 +112,12 @@ export default class MusicController extends React.Component {
                   Connect your Spotify
                 </Button>
         ) : (
+          <div className=" w-100 d-inline-flex align-items-center">
         <p className="mb-0 w-50 overflow-hidden">
           {this.state.artist}
           {this.state.artist ? ": " : "Silence..."} <b>{this.state.song}</b>
-        </p>)
-  }
+        </p>
+  
         <div className="ml-auto d-flex flex-nowrap align-items-center">
           <div className="button btn-prev" onClick={e => this.getSong(e, "previous")}>
             <div></div>
@@ -124,6 +131,7 @@ export default class MusicController extends React.Component {
             <div></div>
           </div>
         </div>
+        </div>)}
       </div>
     );
   }

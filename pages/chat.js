@@ -46,6 +46,10 @@ class Chat extends React.Component {
     //setTimeout(this.setState({chats:getChats()}), 5000);
   };
 
+  componentWillUnmount = () => {
+    clearInterval(intervalID);
+  }
+
 
   handleOptionChange = changeEvent => {
     this.setState({
@@ -145,7 +149,16 @@ class Chat extends React.Component {
       headers: {'Content-Type': 'application/json'},
       params:{ userId: this.getUserProp('id'), userName: this.getUserProp('userName') }})
     .then(res => {
-      this.getPartner(res.data.messages);
+      if (res.data.messages != null){
+        console.log(res.data);
+        var m = res.data.messages.find(x => x.response.userName != null);
+          if (m != null) {
+            m = m.response;
+            let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
+            this.setState({chats: [...this.state.chats, newPartner]});
+            this.setState({currentChatPartner: newPartner});
+          }
+      }
       intervalID = setInterval(this.getChatMessage, 5000);
     })
     .catch(err => {
@@ -154,10 +167,17 @@ class Chat extends React.Component {
   }
 
   joinSpotifyQueue = () => {
-    
+    clearInterval(intervalID);
     axios.post(`${songrService}chat/${token}/join-spotify-queue`, null, {
       headers: {'Content-Type': 'application/json'},
-      params: { userId: this.getUserProp('id'), userName: this.getUserProp('userName')}});
+      params: { userId: this.getUserProp('id'), userName: this.getUserProp('userName')}})
+      .then(res => {
+        this.getPartner(res);
+        intervalID = setInterval(this.getChatMessage, 5000);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   leaveChat = (e) => {
@@ -166,11 +186,11 @@ class Chat extends React.Component {
       headers: {'Content-Type': 'application/json'}, 
       params: { senderId: this.getUserProp('id'), receiverId: this.state.currentChatPartner.userId }});
     clearInterval(intervalID);
-    this.setState({});
-    // var chats = getChats();
-    // var chatToRemove = chats.map(x => x.id == partnerId);
-    // chats.splice( chats.indexOf(chatToRemove), 1 );  
-    // setChats(chats);
+    var chats = getChats();
+    var chatToRemove = chats.map(x => x.userId == this.state.currentChatPartner.userId);
+    chats.splice( chats.indexOf(chatToRemove), 1 );  
+    setChats(chats);
+    this.setState({chats: chats});
   }
 
   getChatMessage = () => {
@@ -178,35 +198,36 @@ class Chat extends React.Component {
       headers: {'Content-Type': 'application/json'}, 
       params: { userId: this.getUserProp('id') } })
       .then(res => {
-        this.getPartner(res.data.messages);
-          // var chats = getChats();
-          // chats.push({
-          //   name: newUser.userName,
-          //   id: newUser.userId,
-          //   messages: []
-          // });
-         // localStorage.setItem('chats', chats);
-        
+        this.getPartner(res);
+        let mArray = res.data.messages.filter(x => x.message);
+        if (mArray.length > 0){
+          mArray.forEach(el => {
+            let thisChat = this.state.chats.find(x => x.userId == el.senderId);
+            thisChat.messages.push([el.message, el.senderId]);
+            this.setState({chats: this.state.chats.map(x => x.userId == thisChat.userId ? thisChat : x)});
+          });  
+        }
       })
       .catch(err => {
         console.error(err);
       });
   }
 
-  sendChatMessage = (partnerId, message) => {
-    axios.post(`${songrService}chat/${token}/send-message`, null, { 
-      headers: {'Content-Type': 'application/json'}, 
-      params: { senderId: getUserProp('id'), receiverId: partnerId, message: message } });
-  }
+  
 
-  getPartner = (messages) => {
-    var m = messages.find(x => x.response.userName != null).response;
-        console.log(m);
-        if (m != null) {
-          let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
-          this.setState({chats: [...this.state.chats, newPartner]});
-          this.setState({currentChatPartner: newPartner});
-        }
+  getPartner = (res) => {
+    if (res.data.messages != null && res.data.messages[0].response != null){
+      var m = res.data.messages.find(x => x.response.userName != null);
+      if (m != null) {
+        m = m.response;
+        let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
+        this.setState({chats: [...this.state.chats, newPartner]});
+        this.setState({currentChatPartner: newPartner});
+        var chats = getChats();
+        chats.push(newPartner);
+        setChats(chats);
+      }
+    }
   }
   
 }

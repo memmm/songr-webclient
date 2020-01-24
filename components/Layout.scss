@@ -139,7 +139,11 @@ h5 {
 
         .message-bubble {
             max-width: 20rem;
-            background: #2c2c5f;
+            background: #2c5f4c;
+            &.own {
+                margin-left: auto;
+                background: #2c2c5f;
+            }
         }
     }
 

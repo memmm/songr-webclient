@@ -15,7 +15,7 @@ export default function ChatCard(props) {
       </div>
       <div className="d-none d-md-block">
         <h4>{props.match.name}</h4>
-        <p className="mb-0"> { props.match.messages.slice(-1)[0] } </p>
+        <p className="mb-0"> { (props.match.messages.slice(-1)[0]) ? props.match.messages.slice(-1)[0].text : "" } </p>
         {/* <p className="mb-0">Reason you connected</p> */}
       </div>
     </a>
