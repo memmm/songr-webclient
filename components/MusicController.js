@@ -112,11 +112,12 @@ export default class MusicController extends React.Component {
                   Connect your Spotify
                 </Button>
         ) : (
+          <div className=" w-100 d-inline-flex align-items-center">
         <p className="mb-0 w-50 overflow-hidden">
           {this.state.artist}
           {this.state.artist ? ": " : "Silence..."} <b>{this.state.song}</b>
-        </p>)
-  }
+        </p>
+  
         <div className="ml-auto d-flex flex-nowrap align-items-center">
           <div className="button btn-prev" onClick={e => this.getSong(e, "previous")}>
             <div></div>
@@ -130,6 +131,7 @@ export default class MusicController extends React.Component {
             <div></div>
           </div>
         </div>
+        </div>)}
       </div>
     );
   }

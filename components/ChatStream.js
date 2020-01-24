@@ -40,7 +40,7 @@ export default class ChatStream extends React.Component {
   sendMessage = () => {
     let token = cookie.get("auth_token");
     if (this.state.message) {
-      this.props.chatPartner.messages = this.props.chatPartner.messages.push([this.state.message, 'me']);
+      this.props.chatPartner.messages.push([this.state.message, this.getUserProp('id')]);
     }
     axios.post(`${songrService}chat/${token}/send-message`, null, { 
       headers: {'Content-Type': 'application/json'}, 
@@ -57,7 +57,7 @@ export default class ChatStream extends React.Component {
         <span className="m-auto">Say hi to your new match or skip the conversation with the button above.</span>}
       <div className="overflow-auto">
         {this.props.chatPartner.messages.map((x, i) => (
-          <Message key={i} message={x}></Message>
+          <Message key={i} message={x} className="`${x.userId}`"></Message>
         ))}
       </div>
       {this.props.chatPartner.name != "" && <InputGroup className="">

@@ -186,11 +186,11 @@ class Chat extends React.Component {
       headers: {'Content-Type': 'application/json'}, 
       params: { senderId: this.getUserProp('id'), receiverId: this.state.currentChatPartner.userId }});
     clearInterval(intervalID);
-    this.setState({});
-    // var chats = getChats();
-    // var chatToRemove = chats.map(x => x.id == partnerId);
-    // chats.splice( chats.indexOf(chatToRemove), 1 );  
-    // setChats(chats);
+    var chats = getChats();
+    var chatToRemove = chats.map(x => x.userId == this.state.currentChatPartner.userId);
+    chats.splice( chats.indexOf(chatToRemove), 1 );  
+    setChats(chats);
+    this.setState({chats: chats});
   }
 
   getChatMessage = () => {
@@ -200,19 +200,13 @@ class Chat extends React.Component {
       .then(res => {
         this.getPartner(res);
         let mArray = res.data.messages.filter(x => x.message);
-        mArray.forEach(el => {
-          let thisChat = this.state.chats.find(x => x.userId == el.senderId);
-          thisChat.messages.push([el.message, el.senderId]);
-          this.setState({chats: this.state.chats.map(x => x.userId == thisChat.userId ? thisChat : x)});
-        });
-          // var chats = getChats();
-          // chats.push({
-          //   name: newUser.userName,
-          //   id: newUser.userId,
-          //   messages: []
-          // });
-         // localStorage.setItem('chats', chats);
-        
+        if (mArray.length > 0){
+          mArray.forEach(el => {
+            let thisChat = this.state.chats.find(x => x.userId == el.senderId);
+            thisChat.messages.push([el.message, el.senderId]);
+            this.setState({chats: this.state.chats.map(x => x.userId == thisChat.userId ? thisChat : x)});
+          });  
+        }
       })
       .catch(err => {
         console.error(err);
@@ -229,6 +223,9 @@ class Chat extends React.Component {
         let newPartner = {name: m.userName, userId: m.userId, thumbnail: m.profileImage, messages: []};
         this.setState({chats: [...this.state.chats, newPartner]});
         this.setState({currentChatPartner: newPartner});
+        var chats = getChats();
+        chats.push(newPartner);
+        setChats(chats);
       }
     }
   }
