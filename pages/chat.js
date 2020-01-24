@@ -75,7 +75,7 @@ class Chat extends React.Component {
           <div className="d-flex flex-column flex-md-row flex-grow-1">
             <div className="mx-3 flex-md-grow-0">
               <Form onSubmit={this.newChat} className="py-1 py-md-3 border-bottom border-info d-flex align-items-center justify-content-between">
-                <div className="">
+                <div className="mr-2">
                   <p className="d-block mb-1 font-weight-bold">Based on:</p>
                   <div>
                     <input type="radio"
@@ -171,8 +171,13 @@ class Chat extends React.Component {
     clearInterval(intervalID);
     axios.post(`${songrService}chat/${token}/join-spotify-queue`, null, {
       headers: {'Content-Type': 'application/json'},
-      params: { userId: this.getUserProp('id'), userName: this.getUserProp('userName')}})
+      params: { 
+        userId: this.getUserProp('id'), 
+        userName: this.getUserProp('userName'),
+        currentlyListening: JSON.stringify(localStorage.getItem('current-song')) || ""
+    }})
       .then(res => {
+        console.log("hah");
         this.getPartner(res);
         intervalID = setInterval(this.getChatMessage, 5000);
       })
@@ -213,8 +218,6 @@ class Chat extends React.Component {
         console.error(err);
       });
   }
-
-  
 
   getPartner = (res) => {
     if (res.data.messages != null && res.data.messages[0].response != null){

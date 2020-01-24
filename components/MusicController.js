@@ -23,6 +23,11 @@ export default class MusicController extends React.Component {
       this.getCurrentlyPlaying();
   };
 
+  getUserProp = (prop) => {
+    var user = JSON.parse(localStorage.getItem('auth_user'));
+    return user[prop];
+  }
+
   getCurrentlyPlaying() {
     clearTimeout(this.timeoutFetchCurrent);
     axios
@@ -40,6 +45,14 @@ export default class MusicController extends React.Component {
             ? ((res.data.item.duration_ms - res.data.progress_ms) > 1000 * 30 ? 1000 * 30 : (res.data.item.duration_ms - res.data.progress_ms - 3))
             : 1000 * 60 //will refetch when current song ends or 1 minute if nothing is listened
         });
+        localStorage.setItem("current-song", JSON.stringify({artist: this.state.artist, title: this.state.song}));
+        let token = cookie.get("auth_token");
+        
+        axios.post(`${songrService}chat/${token}/set-currently-listening`, null, {params: {
+          userId: this.getUserProp('id'),
+          currentlyListening: JSON.stringify({artist: this.state.artist, title: this.state.song})
+        }}).then(res => console.log(res));
+
         this.timeoutFetchCurrent = setTimeout(
           () => this.getCurrentlyPlaying(),
           this.state.ms_left
@@ -105,8 +118,8 @@ export default class MusicController extends React.Component {
       <div className="music-controller w-100 d-inline-flex align-items-center">
         {(!isConnected) ? (
         <Button
-                  className="connect-btn mt-3 w-25 "
-                  variant="secondary"
+                  className="connect-btn mt-3 w-100 "
+                  variant="outline-success"
                   onClick={e => this.onClickloginWithSpotify(e)}
                 >
                   Connect your Spotify
