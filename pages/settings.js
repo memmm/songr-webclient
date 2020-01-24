@@ -75,7 +75,7 @@ export default class Settings extends React.Component {
   addItem = (e, category) => {
     e.preventDefault();
     if (category == 'tracks'){
-      this.setState({tracks: [...this.state.tracks, [this.state.trackArtistInput, this.state.trackTitleInput]]});
+      this.setState({tracks: [...this.state.tracks, [this.state.trackArtistInput, ": ",  this.state.trackTitleInput]]});
     } else if (category == 'artists') {
       this.setState({artists: [...this.state.artists, this.state.artistInput]});
     } else if (category == 'genres') {
@@ -145,14 +145,13 @@ export default class Settings extends React.Component {
                   <div className="pref-section d-flex flex-column">
                     <h5 className="mt-2">Songs</h5>
                     <ul className="list-items pl-2">
-                      {this.state.tracks.map((item) => (
+                      {this.state.tracks.map((item, iTrack) => (
                         <li
                           className="d-flex py-1 justify-content-between w-100 item"
-                        
-                          key={item}
+                          key={iTrack}
                         >
                           {item}
-                          <a href="" onClick={deleteTrack}>
+                          <a href="" onClick={e => this.removeItem(e, 'tracks', iTrack)}>
                           <i className="fas fa-trash-alt"></i> Remove
                           </a>
                         </li>
@@ -189,13 +188,13 @@ export default class Settings extends React.Component {
                   <div className="pref-section d-flex flex-column ">
                     <h5 className="mt-2">Genres</h5>
                     <ul className="list-items pl-2">
-                      {this.state.genres.map((item, i) => (
+                      {this.state.genres.map((item, iGenre) => (
                         <li
                           className="d-flex py-1 justify-content-between w-100 item"
-                          key={i}
+                          key={iGenre}
                         >
                           {item}
-                          <a href="" onClick={e => this.removeItem(e, 'genres', i)}>
+                          <a href="" onClick={e => this.removeItem(e, 'genres', iGenre)}>
                           <i className="fas fa-trash-alt"></i> Remove
                           </a>
                         </li>
@@ -223,14 +222,13 @@ export default class Settings extends React.Component {
                   <div className="pref-section d-flex flex-column ">
                     <h5 className="mt-2">Artists</h5>
                     <ul className="list-items pl-2">
-                      {this.state.artists.map((item) => (
+                      {this.state.artists.map((item, iArtist) => (
                         <li
                           className="d-flex py-1 justify-content-between w-100 item"
-                          
-                          key={item}
+                          key={iArtist}
                         >
                           {item}
-                          <a href="" onClick={deleteArtist}>
+                          <a href="" onClick={e => this.removeItem(e, 'artists', iArtist)}>
                           <i className="fas fa-trash-alt"></i> Remove
                           </a>
                         </li>
