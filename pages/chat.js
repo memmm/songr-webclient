@@ -106,7 +106,8 @@ class Chat extends React.Component {
                 ))}
               </div>
             </div>
-            <div className="d-flex flex-column flex-md-grow-1 ml-auto mr-4">
+            <div className="d-flex flex-column flex-md-grow-1 ml-4 ml-md-auto mr-4">
+              {(this.state.currentChatPartner.name != "") && (
               <div className="my-3 p-md-3 rounded-top d-flex align-items-center">
                 <Image
                   src="/static/pusheen.jpg"
@@ -114,10 +115,10 @@ class Chat extends React.Component {
                 />
                 <span className="font-weight-bold">{this.state.currentChatPartner.name} &nbsp;</span>
                 <p className="mb-0"> now listening to Six Foe: <b>Seasons</b></p>
-                <Button className="ml-auto" onClick={e => this.leaveChat(e)}>
+                <Button variant="secondary" className="ml-auto" onClick={e => this.leaveChat(e)}>
                   Leave chat
                 </Button>
-              </div>
+              </div>)}
               <ChatStream chatPartner= {this.state.currentChatPartner} />
             </div>
           </div>

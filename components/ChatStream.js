@@ -50,7 +50,7 @@ export default class ChatStream extends React.Component {
   }
   render() {
   return (
-    <div className="chat-stream flex-grow-1 p-md-3 flex-grow-1 rounded-bottom d-flex flex-column justify-content-end">
+    <div className="chat-stream flex-grow-1 flex-grow-1 rounded-bottom d-flex flex-column justify-content-end p-md-3 mt-2 ">
       {this.props.chatPartner.name == "" && 
         <span className="m-auto">Start a new conversation or choose one on the right side.</span>}
       {(this.props.chatPartner.name != "" && this.props.chatPartner.messages.length == 0) &&

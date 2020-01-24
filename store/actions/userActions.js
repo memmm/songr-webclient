@@ -23,13 +23,12 @@ export const loginUser = userData => {
       }
       axios.defaults.headers.common["Authorization"] = SongrToken;
       Router.push("/chat");
-      //TODO make this - for now test
-      localStorage.setItem(
-        'preferences', JSON.stringify({
-          tracks: [["artist1", "song1"], ["artist2", "song2"]],
-          artists: ["Caribou", "Jon Hopkins", "Rival Consoles"],
-          genres: ["electronica", "ambient"]
-      }))
+      // localStorage.setItem(
+      //   'preferences', JSON.stringify({
+      //     tracks: [["artist1", "song1"], ["artist2", "song2"]],
+      //     artists: ["Caribou", "Jon Hopkins", "Rival Consoles"],
+      //     genres: ["electronica", "ambient"]
+      // }))
 
     })
     .catch(err => {
@@ -133,9 +132,8 @@ export const updateUserInfo = (formData) => {
   let token = cookie.get("auth_token");
   axios
     .post(`${songrService}user/${token}/set-user`, null, { params: formData })
-    .then(() => {
-      //get user data to see changes
-      dispatch(getUserData());
+    .then(res => {
+      localStorage.setItem('auth_user', JSON.stringify(res.data));
     })
     .catch((err) => console.log(err));
 };

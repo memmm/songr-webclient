@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { getUserData } from "../store/actions/userActions";
+import { getUserData, updateUserInfo } from "../store/actions/userActions";
 import { addGenre, addTrack, addArtist, deleteGenre, deleteTrack, deleteArtist } from "../store/actions/preferenceActions";
 import cookies from "next-cookies";
 
@@ -39,8 +39,13 @@ export default class Settings extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  getUserProp = (prop) => {
+    var user = JSON.parse(localStorage.getItem('auth_user'));
+    return user[prop];
+  }
+
   componentDidMount = () => {
-    
+    this.setState({password: this.getUserProp('password'), email: this.getUserProp('email')});
     //TODO get user preferences if not stored yet in localStorage
     //return them as props
     const preferences = JSON.parse(localStorage.getItem('preferences'));
@@ -58,7 +63,7 @@ export default class Settings extends React.Component {
   };
 
   changeSettings = () => {
-
+    updateUserInfo({email, password});
   }
 
   removeItem(e, category, index) {
@@ -96,6 +101,7 @@ export default class Settings extends React.Component {
                   type="password"
                   aria-label="password"
                   name="password"
+                  value={this.state.password}
                   onChange={e => this.handleChange(e)}
                   aria-describedby="basic-addon2"
                 />
@@ -104,6 +110,7 @@ export default class Settings extends React.Component {
                   aria-label="email"
                   name="email"
                   onChange={e => this.handleChange(e)}
+                  value={this.state.email}
                   aria-describedby="basic-addon2"
                 />
                 <Button
